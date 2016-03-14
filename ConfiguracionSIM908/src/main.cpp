@@ -9,7 +9,7 @@
 
 using namespace std;
 mraa::Uart* SIM908;
-void Driver();
+//void Driver();
 int main()
 {
 	string Path;
@@ -30,7 +30,7 @@ int main()
         std::cout << "Error while setting up raw UART, do you have a uart?" << std::endl;
         std::terminate();
     }
-    if (SIM908->setBaudRate(115200) != mraa::SUCCESS) {
+    if (SIM908->setBaudRate(9600) != mraa::SUCCESS) {
         std::cout << "Error setting parity on UART" << std::endl;
     }
     if (SIM908->setMode(8, mraa::UART_PARITY_NONE, 1) != mraa::SUCCESS) {
@@ -113,35 +113,36 @@ int main()
 
 
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
-	if(start_timer(1000, &Driver))
+	/*if(start_timer(1000, &Driver))
 	  {
 	    printf("\n timer error\n");
 	    return(1);
-	  }
+	  }*/
 
 	while(true)
 	{
-			cout << SIM908->readStr(8) << endl;
+		//	cout << SIM908->readStr(8) << endl;
 
 
 
 
 
 		/*PC->writeStr("Escribir el mensaje");
-		Mensaje = PC->readStr(8);
+		Mensaje = PC->readStr(8);*/
+		cin >> Mensaje;
 		SIM908->writeStr(Mensaje);
 		if(SIM908->dataAvailable(1000))
 		{
 			Respuesta = SIM908->readStr(16);
-			PC->writeStr(Respuesta);
-			//cout << Respuesta << endl;
-			longitud = SIM908->read(data,16);
+			//PC->writeStr(Respuesta);
+			cout << Respuesta << endl;
+			/*longitud = SIM908->read(data,16);
 			cout << longitud << endl;
 			for(int i=0; i<=longitud; i++)
 			{
 				cout << data[i] << endl;
 			}*/
-		//}
+		}
 	}
 	delete PowerKey;
 	delete DTR;
@@ -149,8 +150,8 @@ int main()
 	delete SIM908;
 	return response;
 }
-
+/*
 void Driver(){
-	SIM908->writeStr("AT");
+	SIM908->writeStr("AT\r");
 	//cout << "AT" << endl;
-}
+}*/
