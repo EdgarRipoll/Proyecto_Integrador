@@ -118,7 +118,9 @@ int main()
 	    printf("\n timer error\n");
 	    return(1);
 	  }*/
-
+	int ret;
+	char* Punt;
+	char Msj[3]={'A','T','\r'};
 	while(true)
 	{
 		//	cout << SIM908->readStr(8) << endl;
@@ -129,11 +131,16 @@ int main()
 
 		/*PC->writeStr("Escribir el mensaje");
 		Mensaje = PC->readStr(8);*/
-		cin >> Mensaje;
-		SIM908->writeStr(Mensaje);
+		//cin >> Mensaje;
+		sleep(1);
+		for(int i=0;i<=2;i++)
+		{
+			Punt=&Msj[i];
+			ret=SIM908->write(Punt,1);
+		}
 		if(SIM908->dataAvailable(1000))
 		{
-			Respuesta = SIM908->readStr(16);
+			Respuesta = SIM908->readStr(64);
 			//PC->writeStr(Respuesta);
 			cout << Respuesta << endl;
 			/*longitud = SIM908->read(data,16);
