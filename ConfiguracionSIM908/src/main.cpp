@@ -7,6 +7,18 @@
 #include "mraa.hpp"
 #include "Timer.hpp"
 
+
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <fcntl.h>
+#include <sys/signal.h>
+#include <errno.h>
+#include <termios.h>
+
+
 using namespace std;
 
 
@@ -14,16 +26,23 @@ using namespace std;
 void Driver();
 int WriteCommand(char Com[]);
 std::string ReadResponse();
-
+void signal_handler_IO (int status);   /* definition of signal handler */
 ///////////////////////DECLARACION DE VARIABLES//////////////////////////////////
 mraa::Uart* SIM908;
 char Msj[3]={'A','T','\r'};
 std::string Respuesta;
-
-
+int fd;
+struct sigaction saio;
 //////////////////////INICIO PROGRAMA////////////////////////////////////////////
 int main()
 {
+    fd = open("/dev/ttyMFD1",O_RDWR | O_NOCTTY | O_NDELAY);
+    if (fd == -1)
+    {
+       perror("open_port: Unable to open /dev/ttyO1\n");
+       exit(1);
+    }
+
 
 ////////////////////////INICIALIZO PUERTO SERIE////////////////////////////////////
     try {
@@ -94,7 +113,14 @@ int main()
 		sleep(3);
 		PowerKey->write(0);
     }
+    saio.sa_handler = signal_handler_IO;
+    saio.sa_flags = 0;
+    saio.sa_restorer = NULL;
+    sigaction(SIGIO,&saio,NULL);
 
+    fcntl(fd, F_SETFL, FNDELAY);
+    fcntl(fd, F_SETOWN, getpid());
+    fcntl(fd, F_SETFL,  O_ASYNC );
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
 	if(start_timer(1000, &Driver))
 	  {
@@ -115,8 +141,8 @@ int main()
 
 void Driver(){
 	WriteCommand(Msj);
-	Respuesta=ReadResponse();
-	cout << Respuesta << endl;
+//	Respuesta=ReadResponse();
+//	cout << Respuesta << endl;
 }
 int WriteCommand(char Com[])
 {
@@ -134,4 +160,10 @@ std::string ReadResponse()
 	if(SIM908->dataAvailable(1000))
 		Resp = SIM908->readStr(64);
 	return Resp;
+}
+void signal_handler_IO (int status)
+{
+     //printf("received data from UART.\n");
+	Respuesta=ReadResponse();
+	cout << Respuesta;
 }
