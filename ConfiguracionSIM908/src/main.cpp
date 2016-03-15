@@ -8,22 +8,29 @@
 #include "Timer.hpp"
 
 using namespace std;
+
+
+///////////////////////DECLARACION DE FUNCIONES//////////////////////////////////
+void Driver();
+int WriteCommand(char Com[]);
+std::string ReadResponse();
+
+///////////////////////DECLARACION DE VARIABLES//////////////////////////////////
 mraa::Uart* SIM908;
-//void Driver();
+char Msj[3]={'A','T','\r'};
+std::string Respuesta;
+
+
+//////////////////////INICIO PROGRAMA////////////////////////////////////////////
 int main()
 {
-	string Path;
 
 ////////////////////////INICIALIZO PUERTO SERIE////////////////////////////////////
-
-
     try {
         SIM908 = new mraa::Uart(0);
     } catch (std::exception& e) {
         std::cout << e.what() << ", likely invalid platform config" << std::endl;
     }
-	Path = SIM908->getDevicePath();
-	cout << Path<<endl;
     try {
         SIM908 = new mraa::Uart("/dev/ttyMFD1");
     } catch (std::exception& e) {
@@ -40,24 +47,6 @@ int main()
         std::cout << "Error setting flow control UART" << std::endl;
     }
 
-
-
-	/*mraa::Uart* PC;
-    try {
-    	PC = new mraa::Uart("/dev/ttyGS0");
-    } catch (std::exception& e) {
-        std::cout << "Error while setting up raw UART, do you have a uart?" << std::endl;
-        std::terminate();
-    }
-    if (PC->setBaudRate(115200) != mraa::SUCCESS) {
-        std::cout << "Error setting parity on UART" << std::endl;
-    }
-    if (PC->setMode(8, mraa::UART_PARITY_NONE, 1) != mraa::SUCCESS) {
-        std::cout << "Error setting parity on UART" << std::endl;
-    }
-    if (PC->setFlowcontrol(false, false) != mraa::SUCCESS) {
-        std::cout << "Error setting flow control UART" << std::endl;
-    }*/
 /////////////////////////INICIALIZACION DE GPIO//////////////////////////////////
 
     mraa::Gpio* PowerKey;
@@ -106,50 +95,16 @@ int main()
 		PowerKey->write(0);
     }
 
-///////////////////////DECLARACION DE VARIABLES//////////////////////////////////
-	string Mensaje, Respuesta;
-	char data[8];
-	int longitud;
-
-
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
-	/*if(start_timer(1000, &Driver))
+	if(start_timer(1000, &Driver))
 	  {
 	    printf("\n timer error\n");
 	    return(1);
-	  }*/
-	int ret;
-	char* Punt;
-	char Msj[3]={'A','T','\r'};
+	  }
+
+//////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
 	while(true)
 	{
-		//	cout << SIM908->readStr(8) << endl;
-
-
-
-
-
-		/*PC->writeStr("Escribir el mensaje");
-		Mensaje = PC->readStr(8);*/
-		//cin >> Mensaje;
-		sleep(1);
-		for(int i=0;i<=2;i++)
-		{
-			Punt=&Msj[i];
-			ret=SIM908->write(Punt,1);
-		}
-		if(SIM908->dataAvailable(1000))
-		{
-			Respuesta = SIM908->readStr(64);
-			//PC->writeStr(Respuesta);
-			cout << Respuesta << endl;
-			/*longitud = SIM908->read(data,16);
-			cout << longitud << endl;
-			for(int i=0; i<=longitud; i++)
-			{
-				cout << data[i] << endl;
-			}*/
-		}
 	}
 	delete PowerKey;
 	delete DTR;
@@ -157,8 +112,26 @@ int main()
 	delete SIM908;
 	return response;
 }
-/*
+
 void Driver(){
-	SIM908->writeStr("AT\r");
-	//cout << "AT" << endl;
-}*/
+	WriteCommand(Msj);
+	Respuesta=ReadResponse();
+	cout << Respuesta << endl;
+}
+int WriteCommand(char Com[])
+{
+	char* Punt;
+	for(unsigned int i=0;i<=sizeof(Com)-1;i++)
+	{
+		Punt=&Com[i];
+		SIM908->write(Punt,1);
+	}
+	return sizeof(Com);
+}
+std::string ReadResponse()
+{
+	std::string Resp;
+	if(SIM908->dataAvailable(1000))
+		Resp = SIM908->readStr(64);
+	return Resp;
+}
