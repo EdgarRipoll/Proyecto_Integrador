@@ -100,44 +100,4 @@ void	DatosRecibidos::OrganizaTrama(const char* Separador)
 		Divisiones++;
 	}
 }
-void	DatosRecibidos::DecoNMEA(char latitud[], char longitud[])
-{
-	char Lat2[11];// = convertString2Char(Particion[4]);	//token[4];
-	char Lon2[11];// = convertString2Char(Particion[6]);	//token[6];
-	char latim[9];
-	char longm[9];
-	float	latimf;
-	float	longmf;
-	 switch(token[4]){
-		   case 'N':	latitud[0]=' ';
-						break;
-		   case 'S':	latitud[0]='-';
-						break;
-	 }
-	 switch(token[6]){
-		   case 'E':longitud[0]=' ';
-					break;
-		   case 'W':longitud[0]='-';
-					break;
-	 }
-	 strcpy(Lat2,convertString2Char(Particion[4]));
-	 strcpy(Lon2,convertString2Char(Particion[6]));
-	 strncpy(latim,&Lat2[2],9);
-	 strncpy(longm,&Lon2[2],9);
-	 latimf=(atof(latim))/60;
-	 longmf=(atof(longm))/60;
 
-	 sprintf(&latitud[2],"%.6f",latimf);;
-	 latitud[1]=Lat2[0];
-	 latitud[2]=Lat2[1];
-
-	 sprintf(&longitud[2],"%.6f",longmf);
-	 longitud[1]=Lon2[0];
-	 longitud[2]=Lon2[1];
-}
-char*	DatosRecibidos::getLinkGoogle(char latitud[], char longitud[])
-{
-	char	linkgoogle[54];
-	sprintf(linkgoogle,"https://maps.google.com/maps?q=%s,%s\r",latitud,longitud);
-	return	linkgoogle;
-}

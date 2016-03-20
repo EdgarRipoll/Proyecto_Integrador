@@ -12,8 +12,13 @@
 
 class SMSRecibido: public DatosRecibidos {
 public:
-	SMSRecibido();
+	SMSRecibido(std::string Datos);
+	char*	getNroTelefono();
+	std::string	getMensajedeTexto();
 	virtual ~SMSRecibido();
+private:
+	char*	NumerodeTelefono;
+	std::string	MensajeSMS;
 };
 
 #endif /* SMSRECIBIDO_H_ */

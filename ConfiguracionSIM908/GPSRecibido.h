@@ -12,8 +12,18 @@
 
 class GPSRecibido: public DatosRecibidos {
 public:
-	GPSRecibido();
+	GPSRecibido(std::string Datos);
 	virtual ~GPSRecibido();
+	void	DecoNMEA();//char latitud[], char longitud[]);
+	char*	getLinkGoogle();//char latitud[], char longitud[]);
+	char*	getRawLatitud();
+	char*	getRawLongitud();
+	std::string	getN_SIndicator();
+	std::string	getE_WIndicator();
+private:
+	char	linkgoogle[54];
+	char	latitud[11];
+	char	longitud[11];
 };
 
 #endif /* GPSRECIBIDO_H_ */

@@ -119,18 +119,20 @@ int main()
 									WriteCommand(LeerSMS);
 								break;
 
-				case SMS:	MensajeRecibido = new SMSRecibido();
-							if(MensajeRecibido->getToken(5) == "Ubicación")
+				case SMS:	MensajeRecibido = new SMSRecibido(DatosSIM908);
+							MensajeRecibido->OrganizaTrama(Separador);
+							if(MensajeRecibido->getMensajedeTexto() == "Ubicación")
 								WriteCommand(PedirUbicacion);
-							if(MensajeRecibido->getToken(5) == "Salud")
+							if(MensajeRecibido->getMensajedeTexto() == "Salud")
 								EnviaSalud();
 							break;
 
-				case GPS:	DatosGPS = new	GPSRecibido();
-							DatosGPS->DecoNMEA(latitud,longitud);
+				case GPS:	DatosGPS = new	GPSRecibido(DatosSIM908);
+							DatosGPS->OrganizaTrama(Separador);
+							DatosGPS->DecoNMEA();
 							//linkgoogle = Respuesta->getLinkGoogle(latitud,longitud);
 							//telefono = Respuesta->getTokenChar(1);
-							EnviaSMS(DatosGPS->getLinkGoogle(latitud,longitud), MensajeRecibido->getTokenChar(1));
+							EnviaSMS(DatosGPS->getLinkGoogle(), MensajeRecibido->getNroTelefono());
 							break;
 			}
 		}

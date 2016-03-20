@@ -31,9 +31,7 @@ public:
 	void	setNroDivisiones(int nroTokens);
 	void	setRawResponse(std::string Msj);
 	void	OrganizaTrama(const char* Separador);
-	void	DecoNMEA(char latitud[], char longitud[]);
 	void	IdentificarTipoRespuesta();
-	char*	getLinkGoogle(char latitud[], char longitud[]);
 	int		getNroDivisiones();
 	const char*	getRespuestaCharConstante();
 	char*	getRespuestaChar();

@@ -11,7 +11,7 @@ void EnviaSMS(char sms[], char telefono[]);
 //void OrganizaTrama(std::string Respuesta);
 
 void Timer_Int(){
-	WriteCommand(Msj);
+	//WriteCommand(Msj);
 }
 
 int WriteCommand(char Com[])
@@ -65,7 +65,7 @@ void EnviaSMS (char sms[], char telefono[]){
     end[0] = 0x1a;
     end[1] = '\0';
 	WriteCommand(ModoText);            //modo texto
-	sprintf(&Destino[0],"AT+CMGS=\"%s\"\r\n",telefono);  //numero de destino
+	sprintf(Destino,"AT+CMGS=\"%s\"\r\n",telefono);  //numero de destino
 	WriteCommand(Destino);
 	WriteCommand(sms);  //mensaje a enviar
 	WriteCommand(end);                  //crl-z para enviar el mensaje
