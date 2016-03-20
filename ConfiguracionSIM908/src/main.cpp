@@ -1,38 +1,12 @@
-#include <unistd.h>
-#include <iostream>
-#include <exception>
-#include <iomanip>
-#include <cstdlib>
-#include <stdio.h>
-#include "mraa.hpp"
-#include "Timer.hpp"
-
-
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <fcntl.h>
-#include <sys/signal.h>
-#include <errno.h>
-#include <termios.h>
-
+#include "Funciones.hpp"
 
 using namespace std;
 
 
 ///////////////////////DECLARACION DE FUNCIONES//////////////////////////////////
-void Driver();
-int WriteCommand(char Com[]);
-std::string ReadResponse();
-void signal_handler_IO (int status);   /* definition of signal handler */
+
 ///////////////////////DECLARACION DE VARIABLES//////////////////////////////////
-mraa::Uart* SIM908;
-char Msj[3]={'A','T','\r'};
-std::string Respuesta;
-int fd;
-struct sigaction saio;
+
 //////////////////////INICIO PROGRAMA////////////////////////////////////////////
 int main()
 {
@@ -42,7 +16,6 @@ int main()
        perror("open_port: Unable to open /dev/ttyO1\n");
        exit(1);
     }
-
 
 ////////////////////////INICIALIZO PUERTO SERIE////////////////////////////////////
     try {
@@ -113,6 +86,8 @@ int main()
 		sleep(3);
 		PowerKey->write(0);
     }
+
+///////////////////////INICIALIZACION DE INTERRUPCION SERIAL//////////////////////
     saio.sa_handler = signal_handler_IO;
     saio.sa_flags = 0;
     saio.sa_restorer = NULL;
@@ -122,7 +97,7 @@ int main()
     fcntl(fd, F_SETOWN, getpid());
     fcntl(fd, F_SETFL,  O_ASYNC );
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
-	if(start_timer(1000, &Driver))
+	if(start_timer(1000, &Timer_Int))
 	  {
 	    printf("\n timer error\n");
 	    return(1);
@@ -131,39 +106,38 @@ int main()
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
 	while(true)
 	{
+		if(RecibeDatos)
+		{
+			RecibeDatos=0;
+			//OrganizaTrama(Respuesta);
+			Respuesta = new DatosRecibidos(DatosSIM908);
+			std::cout << Respuesta->getRawResponse();
+			//Respuesta->OrganizaTrama(Separador);
+			//InterpretaDatos();
+			switch	(Respuesta->getTipoRespuesta()){
+				case COMANDO:	if((Respuesta->getToken(0) == "+CMTI: \"SM\""))
+									WriteCommand(LeerSMS);
+								break;
+
+				case SMS:	MensajeRecibido = new SMSRecibido();
+							if(MensajeRecibido->getToken(5) == "Ubicación")
+								WriteCommand(PedirUbicacion);
+							if(MensajeRecibido->getToken(5) == "Salud")
+								EnviaSalud();
+							break;
+
+				case GPS:	DatosGPS = new	GPSRecibido();
+							DatosGPS->DecoNMEA(latitud,longitud);
+							//linkgoogle = Respuesta->getLinkGoogle(latitud,longitud);
+							//telefono = Respuesta->getTokenChar(1);
+							EnviaSMS(DatosGPS->getLinkGoogle(latitud,longitud), MensajeRecibido->getTokenChar(1));
+							break;
+			}
+		}
 	}
 	delete PowerKey;
 	delete DTR;
 	delete RI;
 	delete SIM908;
 	return response;
-}
-
-void Driver(){
-	WriteCommand(Msj);
-//	Respuesta=ReadResponse();
-//	cout << Respuesta << endl;
-}
-int WriteCommand(char Com[])
-{
-	char* Punt;
-	for(unsigned int i=0;i<=sizeof(Com)-1;i++)
-	{
-		Punt=&Com[i];
-		SIM908->write(Punt,1);
-	}
-	return sizeof(Com);
-}
-std::string ReadResponse()
-{
-	std::string Resp;
-	if(SIM908->dataAvailable(1000))
-		Resp = SIM908->readStr(64);
-	return Resp;
-}
-void signal_handler_IO (int status)
-{
-     //printf("received data from UART.\n");
-	Respuesta=ReadResponse();
-	cout << Respuesta;
 }
