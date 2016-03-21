@@ -1,19 +1,19 @@
 #include "Variables.h"
 
 void Timer_Int();
-int WriteCommand(char Com[]);
-std::string ReadResponse();
+//int WriteCommand(char Com[]);
+//std::string ReadResponse();
 void signal_handler_IO (int status);   /* definition of signal handler */
 //void InterpretaDatos();
 void EnviaSalud();
-void EnviaSMS(char sms[], char telefono[]);
+//void EnviaSMS(char sms[], char telefono[]);
 //void DecoNMEA();
 //void OrganizaTrama(std::string Respuesta);
 
 void Timer_Int(){
 	//WriteCommand(Msj);
 }
-
+/*
 int WriteCommand(char Com[])
 {
 	char* Punt;
@@ -31,9 +31,10 @@ std::string ReadResponse()
 		Resp = SIM908->readStr(64);
 	return Resp;
 }
+*/
 void signal_handler_IO (int status)
 {
-	DatosSIM908 = ReadResponse();
+	DatosSIM908 = SIM908->ReadResponse();
 /*	Respuesta = new DatosRecibidos();
 	Respuesta->setRawResponse(ReadResponse());
 	//Respuesta=ReadResponse();
@@ -58,7 +59,7 @@ void InterpretaDatos()
 		Respuesta->setTipoRespuesta(GPS);
 	}
 }
-*/
+
 void EnviaSMS (char sms[], char telefono[]){
 	char	Destino[24];
     char	end[2];
@@ -70,6 +71,7 @@ void EnviaSMS (char sms[], char telefono[]){
 	WriteCommand(sms);  //mensaje a enviar
 	WriteCommand(end);                  //crl-z para enviar el mensaje
 }
+*/
 void EnviaSalud()
 {
 

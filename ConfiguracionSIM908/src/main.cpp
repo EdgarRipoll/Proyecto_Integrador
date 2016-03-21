@@ -17,27 +17,6 @@ int main()
        exit(1);
     }
 
-////////////////////////INICIALIZO PUERTO SERIE////////////////////////////////////
-    try {
-        SIM908 = new mraa::Uart(0);
-    } catch (std::exception& e) {
-        std::cout << e.what() << ", likely invalid platform config" << std::endl;
-    }
-    try {
-        SIM908 = new mraa::Uart("/dev/ttyMFD1");
-    } catch (std::exception& e) {
-        std::cout << "Error while setting up raw UART, do you have a uart?" << std::endl;
-        std::terminate();
-    }
-    if (SIM908->setBaudRate(9600) != mraa::SUCCESS) {
-        std::cout << "Error setting parity on UART" << std::endl;
-    }
-    if (SIM908->setMode(8, mraa::UART_PARITY_NONE, 1) != mraa::SUCCESS) {
-        std::cout << "Error setting parity on UART" << std::endl;
-    }
-    if (SIM908->setFlowcontrol(false, false) != mraa::SUCCESS) {
-        std::cout << "Error setting flow control UART" << std::endl;
-    }
 
 /////////////////////////INICIALIZACION DE GPIO//////////////////////////////////
 
@@ -74,6 +53,32 @@ int main()
     if (response != MRAA_SUCCESS)
         mraa_result_print((mraa_result_t) MRAA_SUCCESS);
     DTR->write(0);
+
+////////////////////////INICIALIZO PUERTO SERIE////////////////////////////////////
+
+    SIM908 = new ModuloSIM("/dev/ttyMFD1",9600);
+    /*
+        try {
+            SIM908 = new mraa::Uart(0);
+        } catch (std::exception& e) {
+            std::cout << e.what() << ", likely invalid platform config" << std::endl;
+        }
+        try {
+            SIM908 = new mraa::Uart("/dev/ttyMFD1");
+        } catch (std::exception& e) {
+            std::cout << "Error while setting up raw UART, do you have a uart?" << std::endl;
+            std::terminate();
+        }
+        if (SIM908->setBaudRate(9600) != mraa::SUCCESS) {
+            std::cout << "Error setting parity on UART" << std::endl;
+        }
+        if (SIM908->setMode(8, mraa::UART_PARITY_NONE, 1) != mraa::SUCCESS) {
+            std::cout << "Error setting parity on UART" << std::endl;
+        }
+        if (SIM908->setFlowcontrol(false, false) != mraa::SUCCESS) {
+            std::cout << "Error setting flow control UART" << std::endl;
+        }
+    */
 
 /////////////////////////ENCENDIDO DEL MODULO////////////////////////////////////
 
@@ -116,13 +121,13 @@ int main()
 			//InterpretaDatos();
 			switch	(Respuesta->getTipoRespuesta()){
 				case COMANDO:	if((Respuesta->getToken(0) == "+CMTI: \"SM\""))
-									WriteCommand(LeerSMS);
+									SIM908->WriteCommand(LeerSMS);
 								break;
 
 				case SMS:	MensajeRecibido = new SMSRecibido(DatosSIM908);
 							MensajeRecibido->OrganizaTrama(Separador);
 							if(MensajeRecibido->getMensajedeTexto() == "Ubicación")
-								WriteCommand(PedirUbicacion);
+								SIM908->WriteCommand(PedirUbicacion);
 							if(MensajeRecibido->getMensajedeTexto() == "Salud")
 								EnviaSalud();
 							break;
@@ -132,7 +137,7 @@ int main()
 							DatosGPS->DecoNMEA();
 							//linkgoogle = Respuesta->getLinkGoogle(latitud,longitud);
 							//telefono = Respuesta->getTokenChar(1);
-							EnviaSMS(DatosGPS->getLinkGoogle(), MensajeRecibido->getNroTelefono());
+							SIM908->EnviaSMS(DatosGPS->getLinkGoogle(), MensajeRecibido->getNroTelefono());
 							break;
 			}
 		}
