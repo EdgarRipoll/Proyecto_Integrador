@@ -7,7 +7,8 @@
 
 #ifndef DATOSRECIBIDOS_H_
 #define DATOSRECIBIDOS_H_
-
+#include <iostream>
+#include <string>
 #include <stdio.h>
 #include <iostream>
 #include <string.h>
@@ -29,7 +30,7 @@ public:
 	virtual ~DatosRecibidos();
 	void	setTipoRespuesta(tipo_de_Respuesta TipoMsj);
 	void	setNroDivisiones(int nroTokens);
-	void	setRawResponse(std::string Msj);
+	void	setRawResponse(std::string& Msj);
 	void	OrganizaTrama(const char* Separador);
 	void	IdentificarTipoRespuesta();
 	int		getNroDivisiones();
@@ -40,7 +41,7 @@ public:
 	std::string		getRawResponse();
 	std::string		getToken(int NroParticion);
 private:
-	char*	convertString2Char(std::string texto);
+	char*	convertString2Char(std::string& texto);
 	tipo_de_Respuesta tipo;
 	int Divisiones; //cantidad de tokens que tiene la trama recibida
 	std::string RawResponse;

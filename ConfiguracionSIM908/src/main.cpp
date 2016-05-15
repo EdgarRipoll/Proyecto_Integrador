@@ -1,5 +1,6 @@
 #include "Funciones.hpp"
-
+#include <iostream>
+#include <string>
 using namespace std;
 
 
@@ -109,19 +110,29 @@ int main()
 	  }
 
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
+	SIM908->WriteCommand(Msj);
 	while(true)
 	{
-		if(RecibeDatos)
+		if(SIM908->getRecibeDato())
 		{
-			RecibeDatos=0;
+			DatosSIM908 = SIM908->ReadResponse();
+			std::cout << "entre"<<std::endl;
+			SIM908->ResetRecibeDato();
+			std::cout << SIM908->getRecibeDato()<<std::endl;
+			//RecibeDatos=0;
 			//OrganizaTrama(Respuesta);
+			cout <<"DatosSIM: "<< DatosSIM908<<" :DatosSIM"<<endl;
 			Respuesta = new DatosRecibidos(DatosSIM908);
+			std::cout << "sali"<<std::endl;
 			std::cout << Respuesta->getRawResponse();
 			//Respuesta->OrganizaTrama(Separador);
 			//InterpretaDatos();
+			std::cout << Respuesta->getToken(0);
 			switch	(Respuesta->getTipoRespuesta()){
 				case COMANDO:	if((Respuesta->getToken(0) == "+CMTI: \"SM\""))
 									SIM908->WriteCommand(LeerSMS);
+								if((Respuesta->getToken(0) == "OK"))
+									std::cout << Respuesta->getToken(0);
 								break;
 
 				case SMS:	MensajeRecibido = new SMSRecibido(DatosSIM908);

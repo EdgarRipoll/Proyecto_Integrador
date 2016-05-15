@@ -28,6 +28,7 @@ ModuloSIM::ModuloSIM(std::string ttyPath, int Baudrate) : mraa::Uart(ttyPath) {
 
     endSMS[0] = 0x1a;
     endSMS[1] = '\0';
+    RecibeDato = 0;
 }
 
 ModuloSIM::~ModuloSIM() {
@@ -49,6 +50,7 @@ std::string ModuloSIM::ReadResponse()
 	std::string Resp;
 	if(this->dataAvailable(1000))
 		Resp = this->readStr(64);
+	RecibeDato = 1;
 	return Resp;
 }
 void ModuloSIM::EnviaSMS (char sms[], char telefono[])
@@ -60,4 +62,16 @@ void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 	WriteCommand(Destino);
 	WriteCommand(sms);  //mensaje a enviar
 	WriteCommand(endSMS);                  //crl-z para enviar el mensaje
+}
+bool ModuloSIM::getRecibeDato()
+{
+	return RecibeDato;
+}
+void ModuloSIM::ResetRecibeDato()
+{
+	RecibeDato = 0;
+}
+void ModuloSIM::setRecibeDato()
+{
+	RecibeDato = 1;
 }

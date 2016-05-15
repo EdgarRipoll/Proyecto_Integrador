@@ -17,9 +17,12 @@ public:
 	int WriteCommand(char Com[]);
 	std::string ReadResponse();
 	void EnviaSMS (char sms[], char telefono[]);
+	bool getRecibeDato();
+	void ResetRecibeDato();
+	void setRecibeDato();
 private:
 	char	endSMS[2];
-
+	bool	RecibeDato;
 };
 
 #endif /* MODULOSIM_H_ */

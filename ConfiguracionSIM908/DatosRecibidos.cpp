@@ -6,8 +6,9 @@
  */
 
 #include <DatosRecibidos.h>
-
-DatosRecibidos::DatosRecibidos(std::string Datos) {
+#include <iostream>
+#include <string>
+DatosRecibidos::DatosRecibidos(std::string Datos){//: RawResponse(Datos) {
 	// TODO Auto-generated constructor stub
 	RawResponse = Datos;
 	/*
@@ -19,7 +20,7 @@ DatosRecibidos::DatosRecibidos(std::string Datos) {
 	RespuestaCharConstante = RawResponse.c_str();
 	RespuestaChar = new char[RawResponse.length() + 1];
 	strcpy(RespuestaChar, RespuestaCharConstante);
-
+	std::cout << RawResponse<<std::endl;
 	tipo = NO_DECLARADO;
 	IdentificarTipoRespuesta();
 	Divisiones = 0;
@@ -52,7 +53,7 @@ std::string	DatosRecibidos::getRawResponse()
 {
 	return RawResponse;
 }
-void	DatosRecibidos::setRawResponse(std::string Msj)
+void	DatosRecibidos::setRawResponse(std::string& Msj)
 {
 	RawResponse = Msj;
 }
@@ -68,7 +69,7 @@ std::string	DatosRecibidos::getToken(int NroParticion)
 {
 	return Particion[NroParticion];
 }
-char*	DatosRecibidos::convertString2Char(std::string texto)
+char*	DatosRecibidos::convertString2Char(std::string& texto)
 {
 	char *Charconvertido = new char[texto.length() + 1];
 	strcpy(Charconvertido, texto.c_str());
@@ -89,6 +90,7 @@ void	DatosRecibidos::IdentificarTipoRespuesta()
 		tipo = COMANDO;
 	if(Particion[0] == "32")
 		tipo = GPS;
+	std::cout << tipo<<std::endl;
 }
 void	DatosRecibidos::OrganizaTrama(const char* Separador)
 {

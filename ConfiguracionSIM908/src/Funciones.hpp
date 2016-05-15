@@ -11,7 +11,7 @@ void EnviaSalud();
 //void OrganizaTrama(std::string Respuesta);
 
 void Timer_Int(){
-	//WriteCommand(Msj);
+	//SIM908->WriteCommand(Msj);
 }
 /*
 int WriteCommand(char Com[])
@@ -34,13 +34,15 @@ std::string ReadResponse()
 */
 void signal_handler_IO (int status)
 {
-	DatosSIM908 = SIM908->ReadResponse();
+	SIM908->setRecibeDato();
+	//DatosSIM908 = SIM908->ReadResponse();
 /*	Respuesta = new DatosRecibidos();
 	Respuesta->setRawResponse(ReadResponse());
 	//Respuesta=ReadResponse();
 	std::cout << Respuesta->getRawResponse();
 */
-	RecibeDatos=1;
+	//RecibeDatos=1;
+	//std::cout << DatosSIM908;
 }
 /*
 void InterpretaDatos()

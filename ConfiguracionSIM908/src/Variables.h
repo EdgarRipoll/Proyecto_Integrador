@@ -21,7 +21,7 @@
 //#include <errno.h>
 //#include <termios.h>
 
-char	Msj[3]={'A','T','\r'};
+char	Msj[]="AT\r";//{'A','T','\r'};
 std::string DatosSIM908;
 ModuloSIM*	SIM908;
 DatosRecibidos*	Respuesta;
@@ -29,7 +29,7 @@ SMSRecibido*	MensajeRecibido;
 GPSRecibido*	DatosGPS;
 int	fd;
 struct	sigaction	saio;
-bool	RecibeDatos=0;
+int	RecibeDatos=0;
 const char	SeparadorTrama = ',';
 const char*	Separador = &SeparadorTrama;
 //char *token;
