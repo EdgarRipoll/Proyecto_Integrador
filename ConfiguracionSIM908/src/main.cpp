@@ -22,7 +22,7 @@ int main()
 
     mraa::Gpio* PowerKey;
     try {
-        PowerKey = new mraa::Gpio(4);
+        PowerKey = new mraa::Gpio(10);
     } catch (std::exception& e) {
         std::cout << e.what() << "Invalid GPIO" << std::endl;
     }
@@ -34,7 +34,7 @@ int main()
 
     mraa::Gpio* RI;
     try {
-        RI = new mraa::Gpio(3);
+        RI = new mraa::Gpio(13);
     } catch (std::exception& e) {
         std::cout << e.what() << "Invalid GPIO" << std::endl;
     }
@@ -56,7 +56,7 @@ int main()
 
 ////////////////////////INICIALIZO PUERTO SERIE////////////////////////////////////
 
-    SIM908 = new ModuloSIM("/dev/ttyMFD1",9600);
+    SIM908 = new ModuloSIM("/dev/ttyMFD1",115200);
     /*
         try {
             SIM908 = new mraa::Uart(0);
