@@ -31,7 +31,7 @@ public:
 	void	setTipoRespuesta(tipo_de_Respuesta TipoMsj);
 	void	setNroDivisiones(int nroTokens);
 	void	setRawResponse(std::string& Msj);
-	void	OrganizaTrama(const char* Separador);
+	void	OrganizaTrama();//const char* Separador);
 	void	IdentificarTipoRespuesta();
 	int		getNroDivisiones();
 	const char*	getRespuestaCharConstante();

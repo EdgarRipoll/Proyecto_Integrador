@@ -17,16 +17,18 @@ DatosRecibidos::DatosRecibidos(std::string Datos){//: RawResponse(Datos) {
 	 * La funcion c_str() returns a const char *; you aren't allowed to change the C-style string returned by c_str().
 	 * To process it you'll have to copy it first:
 	 */
-	RespuestaCharConstante = RawResponse.c_str();
-	RespuestaChar = new char[RawResponse.length() + 1];
-	strcpy(RespuestaChar, RespuestaCharConstante);
-	std::cout << RawResponse<<std::endl;
-	tipo = NO_DECLARADO;
-	IdentificarTipoRespuesta();
 	Divisiones = 0;
 	RespuestaCharConstante = NULL;
 	RespuestaChar = NULL;
 	token = NULL;
+
+	RespuestaCharConstante = RawResponse.c_str();
+	RespuestaChar = new char[RawResponse.length() + 1];
+	strcpy(RespuestaChar, RespuestaCharConstante);
+	std::cout <<"Raw: "<< RawResponse<<std::endl;
+	//tipo = NO_DECLARADO;
+	OrganizaTrama();
+	IdentificarTipoRespuesta();
 }
 
 DatosRecibidos::~DatosRecibidos() {
@@ -81,25 +83,31 @@ char*	DatosRecibidos::getTokenChar(int NroParticion)
 }
 void	DatosRecibidos::IdentificarTipoRespuesta()
 {
-	//std::string comparar = Respuesta->getToken(0);
-	token = strtok(RespuestaChar, ",");
+/*	token = strtok(RespuestaChar, ",");//"\t \n ,");
 	Particion[0]=token;
-	if(Particion[0] == "+CMGR: \"REC UNREAD\"")
+/*	token = strtok(NULL, "\t \n ,");
+	Particion[1]=token;*/
+	if((Particion[0].compare(2, 21, "+CMGR: \"REC UNREAD\"") == 0)||(Particion[0].compare(2, 19, "+CMGR: \"REC READ\"") == 0))
 		tipo = SMS;
-	if((Particion[0] == "+CMTI: \"SM\"")||(Particion[0]=="OK")||(Particion[0]=="ERROR"))
+	if((Particion[0].compare(2, 13, "+CMTI: \"SM\"") == 0)||(Particion[0].compare(2, 2, "OK") == 0)||(Particion[0].compare(2, 5, "ERROR") == 0))
 		tipo = COMANDO;
-	if(Particion[0] == "32")
+	if(Particion[0].compare(2, 2, "32") == 0)
 		tipo = GPS;
-	std::cout << tipo<<std::endl;
+	std::cout <<"Tipo: "<< tipo<<std::endl;
 }
-void	DatosRecibidos::OrganizaTrama(const char* Separador)
+void	DatosRecibidos::OrganizaTrama()//const char* Separador)
 {
-	token = strtok(RespuestaChar, Separador);
+	std::cout <<"Char: "<< RespuestaChar<<std::endl;
+	token = strtok(RespuestaChar, ",");//Separador);
 	while(token != NULL)
 	{
 		Particion[Divisiones]=token;
-		token = strtok(NULL, Separador);
+		token = strtok(NULL, ",");//Separador);
 		Divisiones++;
+	}
+	for(int divisionescopy=Divisiones-1; divisionescopy<0; divisionescopy--)
+	{
+		std::cout <<"Particion[ "<<divisionescopy<<" ]: "<< Particion[divisionescopy]<<" "<< Particion[divisionescopy].size()<<std::endl;
 	}
 }
 

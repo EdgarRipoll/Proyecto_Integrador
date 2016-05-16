@@ -1,5 +1,5 @@
 #include "Variables.h"
-
+#include <stdlib.h>
 void Timer_Int();
 //int WriteCommand(char Com[]);
 //std::string ReadResponse();
@@ -11,6 +11,25 @@ void EnviaSalud();
 //void OrganizaTrama(std::string Respuesta);
 
 void Timer_Int(){
+	if(delay)
+	{
+		cont++;
+		if(cont>3)
+		{
+			delay=0;
+			cont=0;
+		}
+	}/*
+	cont2++;
+	if(cont2>3)
+	{
+		cont=0;
+		SIM908->WriteCommand(Msj);
+		//puts("AT+CGPSINF=32");
+		//SIM908->WriteCommand(Msj2);
+		delay=0;
+	}*/
+
 	//SIM908->WriteCommand(Msj);
 }
 /*
@@ -34,8 +53,13 @@ std::string ReadResponse()
 */
 void signal_handler_IO (int status)
 {
-	SIM908->setRecibeDato();
-	//DatosSIM908 = SIM908->ReadResponse();
+	if(!delay)
+	{
+		SIM908->ReadResponse();
+		std::cout <<"DatosSIM1: "<< SIM908->getDatosSIM() <<" :DatosSIM1"<<std::endl;
+		delay=1;
+	}
+	//SIM908->setRecibeDato();
 /*	Respuesta = new DatosRecibidos();
 	Respuesta->setRawResponse(ReadResponse());
 	//Respuesta=ReadResponse();

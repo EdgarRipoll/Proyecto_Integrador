@@ -45,13 +45,19 @@ int ModuloSIM::WriteCommand(char Com[])
 	}
 	return sizeof(Com);
 }
-std::string ModuloSIM::ReadResponse()
+//std::string ModuloSIM::ReadResponse()
+void ModuloSIM::ReadResponse()
 {
 	std::string Resp;
 	if(this->dataAvailable(1000))
 		Resp = this->readStr(64);
-	RecibeDato = 1;
-	return Resp;
+	//return Resp;
+	if(Resp != "" )
+	{
+		DatosSIM = Resp;
+		RecibeDato = 1;
+	}
+	std::cout<<"Hola: " << DatosSIM <<std::endl;
 }
 void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 {
@@ -74,4 +80,8 @@ void ModuloSIM::ResetRecibeDato()
 void ModuloSIM::setRecibeDato()
 {
 	RecibeDato = 1;
+}
+std::string ModuloSIM::getDatosSIM()
+{
+	return DatosSIM;
 }

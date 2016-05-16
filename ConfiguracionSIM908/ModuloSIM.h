@@ -15,14 +15,16 @@ public:
 	ModuloSIM(std::string ttyPath, int Baudrate);
 	virtual ~ModuloSIM();
 	int WriteCommand(char Com[]);
-	std::string ReadResponse();
+	void ReadResponse();
 	void EnviaSMS (char sms[], char telefono[]);
 	bool getRecibeDato();
 	void ResetRecibeDato();
 	void setRecibeDato();
+	std::string getDatosSIM();
 private:
 	char	endSMS[2];
 	bool	RecibeDato;
+	std::string DatosSIM;
 };
 
 #endif /* MODULOSIM_H_ */
