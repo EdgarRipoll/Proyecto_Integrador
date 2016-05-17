@@ -49,10 +49,10 @@ int ModuloSIM::WriteCommand(char Com[])
 void ModuloSIM::ReadResponse()
 {
 	std::string Resp;
-	if(this->dataAvailable(1000))
-		Resp = this->readStr(64);
+	//if(this->dataAvailable(1000))
+		Resp = this->readStr(1000);
 	//return Resp;
-	if(Resp != "" )
+	if(Resp.compare("") || Resp.compare("\n") || Resp.compare("\r"))//Resp != "" )
 	{
 		DatosSIM = Resp;
 		RecibeDato = 1;

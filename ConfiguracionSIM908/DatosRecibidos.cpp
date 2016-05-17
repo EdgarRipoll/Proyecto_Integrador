@@ -85,24 +85,31 @@ void	DatosRecibidos::IdentificarTipoRespuesta()
 {
 /*	token = strtok(RespuestaChar, ",");//"\t \n ,");
 	Particion[0]=token;
-/*	token = strtok(NULL, "\t \n ,");
+	token = strtok(NULL, "\t \n ,");
 	Particion[1]=token;*/
-	if((Particion[0].compare(2, 21, "+CMGR: \"REC UNREAD\"") == 0)||(Particion[0].compare(2, 19, "+CMGR: \"REC READ\"") == 0))
+	//if((Particion[0].compare(2, 21, "+CMGR: \"REC UNREAD\"") == 0)||(Particion[0].compare(2, 19, "+CMGR: \"REC READ\"") == 0))
+	//if((Particion[0].compare(0, 10, "REC UNREAD") == 0)||(Particion[0].compare(0, 8, "REC READ") == 0))
+	char *Compare = this->convertString2Char(Particion[0]);
+
+	if(strstr(Compare, "+CMGR:") != NULL)
 		tipo = SMS;
-	if((Particion[0].compare(2, 13, "+CMTI: \"SM\"") == 0)||(Particion[0].compare(2, 2, "OK") == 0)||(Particion[0].compare(2, 5, "ERROR") == 0))
+	//if((Particion[0].compare(2, 6/*13*/, +CMTI:/*"+CMTI: \"SM\""*/) == 0)||(Particion[0].compare(2, 2, "OK") == 0)||(Particion[0].compare(2, 5, "ERROR") == 0))
+	//if((Particion[0].compare(1, 6, "+CMTI:") == 0)||(Particion[0].compare(2, 2, "OK") == 0)||(Particion[0].compare(2, 5, "ERROR") == 0))
+	if((strstr(Compare, "+CMTI:") != NULL) || (strstr(Compare, "OK") != NULL) || (strstr(Compare, "ERROR") != NULL))
 		tipo = COMANDO;
-	if(Particion[0].compare(2, 2, "32") == 0)
+	//if(Particion[0].compare(2, 2, "32") == 0)
+	if((strstr(Compare, "32") != NULL))
 		tipo = GPS;
 	std::cout <<"Tipo: "<< tipo<<"\n";
 }
 void	DatosRecibidos::OrganizaTrama()//const char* Separador)
 {
 	//std::cout <<"Char: "<< RespuestaChar<<"\n";
-	token = strtok(RespuestaChar, ",");//Separador);
+	token = strtok(RespuestaChar, "\"");//Separador);
 	while(token != NULL)
 	{
 		Particion[Divisiones]=token;
-		token = strtok(NULL, ",");//Separador);
+		token = strtok(NULL, "\"");//Separador);
 		Divisiones++;
 	}/*
 	for(int divisionescopy=Divisiones-1; divisionescopy<0; divisionescopy--)

@@ -103,7 +103,7 @@ int main()
     fcntl(fd, F_SETOWN, getpid());
     fcntl(fd, F_SETFL,  O_ASYNC );
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
-	if(start_timer(1000, &Timer_Int))
+	if(start_timer(500, &Timer_Int))
 	  {
 	    printf("\n timer error\n");
 	    return(1);
@@ -131,34 +131,38 @@ int main()
 			//InterpretaDatos();
 			std::cout <<"Token: "<< Respuesta->getToken(0)<<"\n";
 			switch	(Respuesta->getTipoRespuesta()){
-				case COMANDO:	if(Respuesta->getToken(0).compare(2, 13, "+CMTI: \"SM\"") == 0)
+				case COMANDO:	//if(Respuesta->getToken(0).compare(2, 13, "+CMTI: \"SM\"") == 0)
+								if(strstr(Respuesta->getTokenChar(0),"+CMTI:") != NULL)
 									{
 									//SIM908->WriteCommand(LeerSMS);
 									SIM908->writeStr(LeerSMS);
 									delay=0;
 									std::cout <<"Switch1: "<< Respuesta->getToken(0)<<"\n";
 									}
-								if(Respuesta->getToken(0).compare(2, 2, "OK") == 0)
+								if(strstr(Respuesta->getTokenChar(0),"OK") != NULL)
 									std::cout <<"Switch2: "<< Respuesta->getToken(0)<<"\n";
 								break;
 
 				case SMS:	MensajeRecibido = new SMSRecibido(SIM908->getDatosSIM());
 							//MensajeRecibido->OrganizaTrama(Separador);
-							std::cout <<"MSJ: "<< MensajeRecibido->getMensajedeTexto()<<" "<< MensajeRecibido->getMensajedeTexto().size()<<"\n";
+							std::cout <<"MSJ: "<< MensajeRecibido->getMensajedeTexto()<<"\n";
 							std::cout <<"Tel: "<< MensajeRecibido->getNroTelefono() <<"\n";
-							if(MensajeRecibido->getMensajedeTexto().compare(2, 9, "Ubicacion") == 0)
+							//if(MensajeRecibido->getMensajedeTexto().compare(14, 9, "Ubicacion") == 0)
+							if(strstr(MensajeRecibido->getMensajedeTexto(), "Ubicacion") != NULL)
 							{
-								delay=0;
 								//SIM908->WriteCommand(PedirUbicacion);
 								SIM908->writeStr(PedirUbicacion);
+								delay=0;
 								std::cout <<"Switch3"<<"\n";
 							}
-							if(MensajeRecibido->getMensajedeTexto().compare(2, 5, "Salud") == 0)
+							//if(MensajeRecibido->getMensajedeTexto().compare(2, 5, "Salud") == 0)
+							if(strstr(MensajeRecibido->getMensajedeTexto(), "Salud") != NULL)
 								EnviaSalud();
 							break;
 
 				case GPS:	DatosGPS = new	GPSRecibido(SIM908->getDatosSIM());
 							//DatosGPS->OrganizaTrama(Separador);
+							std::cout <<"Switch4"<<"\n";
 							DatosGPS->DecoNMEA();
 							//linkgoogle = Respuesta->getLinkGoogle(latitud,longitud);
 							//telefono = Respuesta->getTokenChar(1);

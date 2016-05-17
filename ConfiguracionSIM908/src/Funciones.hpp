@@ -14,7 +14,7 @@ void Timer_Int(){
 	if(delay)
 	{
 		cont++;
-		if(cont>2)
+		if(cont>1)
 		{
 			delay=0;
 			cont=0;
@@ -59,6 +59,28 @@ void signal_handler_IO (int status)
 		//std::cout <<"DatosSIM1: "<< SIM908->getDatosSIM() <<" :DatosSIM1"<<std::endl;
 		delay=1;
 	}
+
+	/*
+    // this loop waits for the answer
+    do{
+        // if there are data in the UART input buffer, reads it and checks for the asnwer
+        if(SIM908->dataAvailable(500){
+        	Resp = SIM908->readStr(64);
+            response[x] = Serial.read();
+            x++;
+            // check if the desired answer is in the response of the module
+            if (strstr(response, expected_answer) != NULL)
+            {
+                answer = 1;
+            }
+        }
+        // Waits for the asnwer with time out
+    }while((answer == 0) && ((millis() - previous) < timeout));
+	*/
+
+
+
+
 	//SIM908->setRecibeDato();
 /*	Respuesta = new DatosRecibidos();
 	Respuesta->setRawResponse(ReadResponse());
