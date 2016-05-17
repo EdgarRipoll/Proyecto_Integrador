@@ -14,7 +14,7 @@ void Timer_Int(){
 	if(delay)
 	{
 		cont++;
-		if(cont>3)
+		if(cont>2)
 		{
 			delay=0;
 			cont=0;
@@ -56,7 +56,7 @@ void signal_handler_IO (int status)
 	if(!delay)
 	{
 		SIM908->ReadResponse();
-		std::cout <<"DatosSIM1: "<< SIM908->getDatosSIM() <<" :DatosSIM1"<<std::endl;
+		//std::cout <<"DatosSIM1: "<< SIM908->getDatosSIM() <<" :DatosSIM1"<<std::endl;
 		delay=1;
 	}
 	//SIM908->setRecibeDato();

@@ -110,51 +110,54 @@ int main()
 	  }
 
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
-	SIM908->WriteCommand(Msj);
+	//SIM908->WriteCommand(Msj);
+	SIM908->writeStr(Msj);
 	delay=0;
 	while(true)
 	{
 
 		if(SIM908->getRecibeDato())
 		{
-			std::cout << "entre"<<std::endl;
+			std::cout << "entre"<<"\n";
 			SIM908->ResetRecibeDato();
-			std::cout <<"RecibeDato: "<< SIM908->getRecibeDato()<<std::endl;
+			std::cout <<"RecibeDato: "<< SIM908->getRecibeDato()<<"\n";
 			//RecibeDatos=0;
 			//OrganizaTrama(Respuesta);
 			cout <<"DatosSIM: "<< SIM908->getDatosSIM() <<" :DatosSIM"<<endl;
 			Respuesta = new DatosRecibidos(SIM908->getDatosSIM());
 			std::cout << "sali"<<std::endl;
-			std::cout << "Respuesta: "<< Respuesta->getRawResponse();
+			//std::cout << "Respuesta: "<< Respuesta->getRawResponse();
 			//Respuesta->OrganizaTrama(Separador);
 			//InterpretaDatos();
-			std::cout <<"Token: "<< Respuesta->getToken(0)<<std::endl;
+			std::cout <<"Token: "<< Respuesta->getToken(0)<<"\n";
 			switch	(Respuesta->getTipoRespuesta()){
 				case COMANDO:	if(Respuesta->getToken(0).compare(2, 13, "+CMTI: \"SM\"") == 0)
 									{
-									SIM908->WriteCommand(LeerSMS);
+									//SIM908->WriteCommand(LeerSMS);
+									SIM908->writeStr(LeerSMS);
 									delay=0;
-									std::cout <<"Switch1: "<< Respuesta->getToken(0)<<std::endl;
+									std::cout <<"Switch1: "<< Respuesta->getToken(0)<<"\n";
 									}
 								if(Respuesta->getToken(0).compare(2, 2, "OK") == 0)
-									std::cout <<"Switch2: "<< Respuesta->getToken(0)<<std::endl;
+									std::cout <<"Switch2: "<< Respuesta->getToken(0)<<"\n";
 								break;
 
-				case SMS:	MensajeRecibido = new SMSRecibido(DatosSIM908);
+				case SMS:	MensajeRecibido = new SMSRecibido(SIM908->getDatosSIM());
 							//MensajeRecibido->OrganizaTrama(Separador);
-							std::cout <<"MSJ: "<< MensajeRecibido->getMensajedeTexto()<<" "<< MensajeRecibido->getMensajedeTexto().size()<<std::endl;
-							std::cout <<"Tel: "<< MensajeRecibido->getNroTelefono() << std::endl;
-							if(MensajeRecibido->getMensajedeTexto().compare(2, 9, "Ubicación") == 0)
+							std::cout <<"MSJ: "<< MensajeRecibido->getMensajedeTexto()<<" "<< MensajeRecibido->getMensajedeTexto().size()<<"\n";
+							std::cout <<"Tel: "<< MensajeRecibido->getNroTelefono() <<"\n";
+							if(MensajeRecibido->getMensajedeTexto().compare(2, 9, "Ubicacion") == 0)
 							{
 								delay=0;
-								SIM908->WriteCommand(PedirUbicacion);
-								std::cout <<"Switch3"<<endl;
+								//SIM908->WriteCommand(PedirUbicacion);
+								SIM908->writeStr(PedirUbicacion);
+								std::cout <<"Switch3"<<"\n";
 							}
 							if(MensajeRecibido->getMensajedeTexto().compare(2, 5, "Salud") == 0)
 								EnviaSalud();
 							break;
 
-				case GPS:	DatosGPS = new	GPSRecibido(DatosSIM908);
+				case GPS:	DatosGPS = new	GPSRecibido(SIM908->getDatosSIM());
 							//DatosGPS->OrganizaTrama(Separador);
 							DatosGPS->DecoNMEA();
 							//linkgoogle = Respuesta->getLinkGoogle(latitud,longitud);

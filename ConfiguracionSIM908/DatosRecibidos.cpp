@@ -25,7 +25,7 @@ DatosRecibidos::DatosRecibidos(std::string Datos){//: RawResponse(Datos) {
 	RespuestaCharConstante = RawResponse.c_str();
 	RespuestaChar = new char[RawResponse.length() + 1];
 	strcpy(RespuestaChar, RespuestaCharConstante);
-	std::cout <<"Raw: "<< RawResponse<<std::endl;
+	//std::cout <<"Raw: "<< RawResponse<<std::endl;
 	//tipo = NO_DECLARADO;
 	OrganizaTrama();
 	IdentificarTipoRespuesta();
@@ -93,21 +93,21 @@ void	DatosRecibidos::IdentificarTipoRespuesta()
 		tipo = COMANDO;
 	if(Particion[0].compare(2, 2, "32") == 0)
 		tipo = GPS;
-	std::cout <<"Tipo: "<< tipo<<std::endl;
+	std::cout <<"Tipo: "<< tipo<<"\n";
 }
 void	DatosRecibidos::OrganizaTrama()//const char* Separador)
 {
-	std::cout <<"Char: "<< RespuestaChar<<std::endl;
+	//std::cout <<"Char: "<< RespuestaChar<<"\n";
 	token = strtok(RespuestaChar, ",");//Separador);
 	while(token != NULL)
 	{
 		Particion[Divisiones]=token;
 		token = strtok(NULL, ",");//Separador);
 		Divisiones++;
-	}
+	}/*
 	for(int divisionescopy=Divisiones-1; divisionescopy<0; divisionescopy--)
 	{
 		std::cout <<"Particion[ "<<divisionescopy<<" ]: "<< Particion[divisionescopy]<<" "<< Particion[divisionescopy].size()<<std::endl;
-	}
+	}*/
 }
 

@@ -57,7 +57,7 @@ void ModuloSIM::ReadResponse()
 		DatosSIM = Resp;
 		RecibeDato = 1;
 	}
-	std::cout<<"Hola: " << DatosSIM <<std::endl;
+	std::cout<<"Hola: " << DatosSIM <<"\n";
 }
 void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 {
