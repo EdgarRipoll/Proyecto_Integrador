@@ -49,15 +49,18 @@ int ModuloSIM::WriteCommand(char Com[])
 void ModuloSIM::ReadResponse()
 {
 	std::string Resp;
-	//if(this->dataAvailable(1000))
-		Resp = this->readStr(1000);
+	if(this->dataAvailable(500))
+		Resp = this->readStr(100);
 	//return Resp;
-	if(Resp.compare("") || Resp.compare("\n") || Resp.compare("\r"))//Resp != "" )
+/*	if(Resp.compare("") || Resp.compare("\n") || Resp.compare("\r"))//Resp != "" )
 	{
 		DatosSIM = Resp;
 		RecibeDato = 1;
-	}
-	std::cout<<"Hola: " << DatosSIM <<"\n";
+	}*/
+	DatosSIM = Resp;
+	this->setRecibeDato();
+
+	std::cout<<"Hola: " << Resp <<"\n";
 }
 void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 {
@@ -65,9 +68,12 @@ void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 	char	ModoText[] = "AT+CMGF=1\r\n";
 	WriteCommand(ModoText);            //modo texto
 	sprintf(Destino,"AT+CMGS=\"%s\"\r\n",telefono);  //numero de destino
-	WriteCommand(Destino);
-	WriteCommand(sms);  //mensaje a enviar
-	WriteCommand(endSMS);                  //crl-z para enviar el mensaje
+	//WriteCommand(Destino);
+	//WriteCommand(sms);  //mensaje a enviar
+	//WriteCommand(endSMS);                  //crl-z para enviar el mensaje
+	this->writeStr(Destino);
+	this->writeStr(sms);  //mensaje a enviar
+	this->writeStr(endSMS);//crl-z para enviar el mensaje
 }
 bool ModuloSIM::getRecibeDato()
 {

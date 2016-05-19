@@ -10,7 +10,8 @@
 SMSRecibido::SMSRecibido(std::string Datos) : DatosRecibidos(Datos) {
 	// TODO Auto-generated constructor stub
 	NumerodeTelefono = this->getTokenChar(3);
-	MensajeSMS = this->getTokenChar(8);
+	MensajeSMS = this->getTokenChar(7);
+	MensajeSMS2 = this->getTokenChar(8);
 	//MensajeSMS = this->getToken(4);
 }
 
@@ -22,7 +23,12 @@ char*	SMSRecibido::getNroTelefono()
 	return	NumerodeTelefono;
 }
 //std::string	SMSRecibido::getMensajedeTexto()
-char*	SMSRecibido::getMensajedeTexto()
+char*	SMSRecibido::getMensajedeTexto(int nroSMS)
 {
-	return	MensajeSMS;
+	switch(nroSMS)
+	{
+	case 0: return	MensajeSMS;
+	case 1: return	MensajeSMS2;
+	default: return	MensajeSMS;
+	}
 }

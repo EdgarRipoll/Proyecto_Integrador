@@ -40,20 +40,20 @@ void	GPSRecibido::DecoNMEA()//char latitud[], char longitud[])
 	float	latimf;
 	float	longmf;
 
-	 if(getN_SIndicator() == "N") //Particion[4]
+	 if(this->getN_SIndicator() == "N") //Particion[4]
 		 latitud[0]=' ';
-	 if(getN_SIndicator() == "S")
+	 if(this->getN_SIndicator() == "S")
 		 latitud[0]='-';
 
-	 if(getE_WIndicator() == "E") //Particion[6]
+	 if(this->getE_WIndicator() == "E") //Particion[6]
 		 longitud[0]=' ';
-	 if(getE_WIndicator() == "W")
+	 if(this->getE_WIndicator() == "W")
 		 longitud[0]='-';
 
 	 //strcpy(Lat2,convertString2Char(this->Particion[4]));
-	 Lat2 = getRawLatitud();//this->getTokenChar(3);
+	 Lat2 = this->getRawLatitud();//this->getTokenChar(3);
 	 //strcpy(Lon2,convertString2Char(this->Particion[6]));
-	 Lon2 = getRawLongitud();//this->getTokenChar(5);
+	 Lon2 = this->getRawLongitud();//this->getTokenChar(5);
 	 strncpy(latim,&Lat2[2],9);
 	 strncpy(longm,&Lon2[2],9);
 	 latimf=(atof(latim))/60;

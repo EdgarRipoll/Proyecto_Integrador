@@ -15,12 +15,13 @@ public:
 	SMSRecibido(std::string Datos);
 	char*	getNroTelefono();
 	//std::string	getMensajedeTexto();
-	char*	getMensajedeTexto();
+	char*	getMensajedeTexto(int nroSMS);
 	virtual ~SMSRecibido();
 private:
 	char*	NumerodeTelefono;
 	//std::string	MensajeSMS;
 	char*	MensajeSMS;
+	char*	MensajeSMS2;
 };
 
 #endif /* SMSRECIBIDO_H_ */

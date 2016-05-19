@@ -105,11 +105,11 @@ void	DatosRecibidos::IdentificarTipoRespuesta()
 void	DatosRecibidos::OrganizaTrama()//const char* Separador)
 {
 	//std::cout <<"Char: "<< RespuestaChar<<"\n";
-	token = strtok(RespuestaChar, "\"");//Separador);
+	token = strtok(RespuestaChar," ,\"\r\n-");//Separador);" ,\"\r\n-")
 	while(token != NULL)
 	{
 		Particion[Divisiones]=token;
-		token = strtok(NULL, "\"");//Separador);
+		token = strtok(NULL, " ,\"\r\n-");//Separador);
 		Divisiones++;
 	}/*
 	for(int divisionescopy=Divisiones-1; divisionescopy<0; divisionescopy--)

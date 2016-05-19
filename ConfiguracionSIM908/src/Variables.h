@@ -21,7 +21,7 @@
 //#include <errno.h>
 //#include <termios.h>
 
-char	Msj[]="AT+CMGR=22\r";//{'\r','\n','A','T','+','C','M','G','R','=','2','2','\r','\n'};//"AT+CGPSINF=32 \r";//"AT\r";//{'A','T','\r'};
+char	Msj[]="AT\r";//{'\r','\n','A','T','+','C','M','G','R','=','2','2','\r','\n'};//"AT+CGPSINF=32 \r";//"AT\r";//{'A','T','\r'};
 std::string DatosSIM908;
 ModuloSIM*	SIM908;
 DatosRecibidos*	Respuesta;
