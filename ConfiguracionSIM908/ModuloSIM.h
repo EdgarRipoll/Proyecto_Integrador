@@ -14,7 +14,8 @@ class ModuloSIM: public mraa::Uart {
 public:
 	ModuloSIM(std::string ttyPath, int Baudrate);
 	virtual ~ModuloSIM();
-	int WriteCommand(char Com[]);
+	//int WriteCommand(char Com[]);
+	void WriteATCommand(std::string Datos);
 	void ReadResponse();
 	void EnviaSMS (char sms[], char telefono[]);
 	bool getRecibeDato();

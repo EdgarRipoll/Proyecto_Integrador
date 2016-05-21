@@ -130,7 +130,8 @@ int main()
 	//SIM908->WriteCommand(Msj);
 	sleep(2);
 //	delay=0;
-	SIM908->writeStr("AT\r");
+//	SIM908->writeStr("AT\r");
+	SIM908->WriteATCommand("AT\r");
 /*	sleep(3);
 	delay=0;
 	SIM908->writeStr("AT+CMGR=2\r");*/
@@ -163,7 +164,8 @@ int main()
 									LeerSMS = "AT+CMGR=" + Respuesta->getIndexSMS() + "\r";
 
 									//SIM908->writeStr(LeerSMS);
-									SIM908->writeStr(LeerSMS);
+									//SIM908->writeStr(LeerSMS);
+									SIM908->WriteATCommand(LeerSMS);
 									//delay=0;
 									std::cout <<"Switch1: "<< Respuesta->getToken(0)<<"\n";
 									}
@@ -180,15 +182,16 @@ int main()
 							if((strstr(MensajeRecibido->getMensajedeTexto(1), "Ubicacion") != NULL) || (strstr(MensajeRecibido->getMensajedeTexto(0), "Ubicacion") != NULL))
 							{
 								//SIM908->WriteCommand(PedirUbicacion);
-								bool ATdeshabilitado=1;
+								/*bool ATdeshabilitado=1;
 								do
 									{
-									if(SIM908->dataAvailable(500))
+									if(!SIM908->dataAvailable(1000))
 										{
 										ATdeshabilitado=0;
 										SIM908->writeStr(PedirUbicacion);
 										}
-									}while(ATdeshabilitado);
+									}while(ATdeshabilitado);*/
+								SIM908->WriteATCommand(PedirUbicacion);
 								//delay=0;
 								std::cout <<"Switch3"<<"\n";
 							}

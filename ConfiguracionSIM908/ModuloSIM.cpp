@@ -34,7 +34,7 @@ ModuloSIM::ModuloSIM(std::string ttyPath, int Baudrate) : mraa::Uart(ttyPath) {
 ModuloSIM::~ModuloSIM() {
 	// TODO Auto-generated destructor stub
 }
-
+/*
 int ModuloSIM::WriteCommand(char Com[])
 {
 	char* Punt;
@@ -44,6 +44,18 @@ int ModuloSIM::WriteCommand(char Com[])
 		this->write(Punt,1);
 	}
 	return sizeof(Com);
+}*/
+void	ModuloSIM::WriteATCommand(std::string Datos)
+{
+	bool ATdeshabilitado1=1;
+	do
+		{
+		if(!this->dataAvailable(500))
+			{
+			ATdeshabilitado1=0;
+			this->writeStr(Datos);
+			}
+		}while(ATdeshabilitado1);
 }
 //std::string ModuloSIM::ReadResponse()
 void ModuloSIM::ReadResponse()
