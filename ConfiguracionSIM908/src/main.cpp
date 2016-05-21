@@ -107,6 +107,7 @@ int main()
 		sleep(3);
 		SIM908->writeStr("AT+CGPSRST=1\r");
 		sleep(3);
+		SIM908->ReadResponse();
 		//SIM908->writeStr("AT+CMGF=1\r");
     }
 
@@ -157,6 +158,8 @@ int main()
 			switch	(Respuesta->getTipoRespuesta()){
 				case COMANDO:	//if(Respuesta->getToken(0).compare(2, 13, "+CMTI: \"SM\"") == 0)
 								//if(strstr(Respuesta->getTokenChar(0),"+CMTI:") != NULL)
+			//if(Respuesta->getTipoRespuesta()==COMANDO)
+				//{
 								if(strstr(Respuesta->getRespuestaChar(),"+CMTI:") != NULL)
 									{
 									//SIM908->WriteCommand(LeerSMS);
@@ -172,8 +175,11 @@ int main()
 								if(strstr(Respuesta->getTokenChar(0),"OK") != NULL || strstr(Respuesta->getTokenChar(0),"ERROR") != NULL  )
 									std::cout <<"Switch2: "<< Respuesta->getToken(0)<<"\n";
 								break;
-
-				case SMS:	MensajeRecibido = new SMSRecibido(SIM908->getDatosSIM());
+				//}
+			//if(Respuesta->getTipoRespuesta()==SMS)
+			//{
+				case SMS:
+							MensajeRecibido = new SMSRecibido(SIM908->getDatosSIM());
 							//MensajeRecibido->OrganizaTrama(Separador);
 							std::cout <<"MSJ: "<< MensajeRecibido->getMensajedeTexto(1)<<"\n";
 							std::cout <<"MSJ: "<< MensajeRecibido->getMensajedeTexto(0)<<"\n";
@@ -199,18 +205,22 @@ int main()
 							if((strstr(MensajeRecibido->getMensajedeTexto(1), "Salud") != NULL) || (strstr(MensajeRecibido->getMensajedeTexto(0), "Salud") != NULL))
 								EnviaSalud();
 							break;
-
-				case GPS:	DatosGPS = new	GPSRecibido(SIM908->getDatosSIM());
+			//}
+			//if(Respuesta->getTipoRespuesta()==GPS)
+			//{
+				case GPS:
+							DatosGPS = new	GPSRecibido(SIM908->getDatosSIM());
 							//DatosGPS->OrganizaTrama(Separador);
 							std::cout <<"Switch4"<<"\n";
 							DatosGPS->DecoNMEA();
 							//linkgoogle = Respuesta->getLinkGoogle(latitud,longitud);
 							//telefono = Respuesta->getTokenChar(1);
-							std::cout <<"Switch5"<<"\n";
+							std::cout <<"Switch5 "<< DatosGPS->getLinkGoogle() <<"\n";
 							SIM908->EnviaSMS(DatosGPS->getLinkGoogle(), MensajeRecibido->getNroTelefono());
 							std::cout <<"Switch6"<<"\n";
 							break;
 			}
+			//}
 		}
 	}
 	delete PowerKey;

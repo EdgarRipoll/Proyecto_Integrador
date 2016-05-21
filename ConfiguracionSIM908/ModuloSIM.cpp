@@ -50,7 +50,7 @@ void	ModuloSIM::WriteATCommand(std::string Datos)
 	bool ATdeshabilitado1=1;
 	do
 		{
-		if(!this->dataAvailable(500))
+		if(!this->dataAvailable(200))
 			{
 			ATdeshabilitado1=0;
 			this->writeStr(Datos);
@@ -85,13 +85,17 @@ void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 	char	Destino[24];
 /*	char	ModoText[] = "AT+CMGF=1\r\n";
 	WriteCommand(ModoText);            //modo texto*/
+	std::cout<< "SMS: " <<sms<<"\n";
 	sprintf(Destino,"AT+CMGS=\"%s\"\r\n",telefono);  //numero de destino
 	//WriteCommand(Destino);
 	//WriteCommand(sms);  //mensaje a enviar
 	//WriteCommand(endSMS);                  //crl-z para enviar el mensaje
-	this->writeStr(Destino);
+/*	this->writeStr(Destino);
 	this->writeStr(sms);  //mensaje a enviar
-	this->writeStr(endSMS);//crl-z para enviar el mensaje
+	this->writeStr(endSMS);//crl-z para enviar el mensaje*/
+	this->WriteATCommand(Destino);
+	this->WriteATCommand(sms);
+	this->WriteATCommand(endSMS);
 }
 bool ModuloSIM::getRecibeDato()
 {
