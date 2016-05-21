@@ -52,15 +52,21 @@ void ModuloSIM::ReadResponse()
 	if(this->dataAvailable(500))
 		Resp = this->readStr(100);
 	//return Resp;
-/*	if(Resp.compare("") || Resp.compare("\n") || Resp.compare("\r"))//Resp != "" )
+	//if(Resp.compare("") || Resp.compare("\n") || Resp.compare("\r"))//Resp != "" )
+	if(Resp != "\0")
 	{
 		DatosSIM = Resp;
 		RecibeDato = 1;
-	}*/
+		std::cout<<"Hola: " << DatosSIM <<"\n";
+	}
+	else{
+		std::cout<<"Era un 0";
+	}
+	/*
 	DatosSIM = Resp;
 	this->setRecibeDato();
 
-	std::cout<<"Hola: " << Resp <<"\n";
+	std::cout<<"Hola: " << Resp <<"\n";*/
 }
 void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 {

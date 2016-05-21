@@ -130,12 +130,12 @@ int main()
 
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
 	//SIM908->WriteCommand(Msj);
-	sleep(2);
+/*	sleep(2);
 	delay=0;
-	SIM908->writeStr("AT\r");
+	SIM908->writeStr("AT\r");*/
 	sleep(3);
 	delay=0;
-	SIM908->writeStr("AT+CMGR=22\r");
+	SIM908->writeStr("AT+CMGR=2\r");
 	while(true)
 	{
 
@@ -209,3 +209,38 @@ int main()
 	delete DatosGPS;
 	return response;
 }
+
+
+
+
+
+void Timer_Int(){
+	if(delay)
+	{
+		cont++;
+		if(cont>1)
+		{
+			delay=0;
+			cont=0;
+		}
+	}
+}
+
+void signal_handler_IO (int status)
+{
+	//if(!delay)
+	//{
+		SIM908->ReadResponse();
+		delay=1;
+	//}
+
+}
+
+void EnviaSalud()
+{
+
+}
+
+
+
+
