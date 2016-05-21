@@ -40,6 +40,7 @@ public:
 	tipo_de_Respuesta getTipoRespuesta();
 	std::string		getRawResponse();
 	std::string		getToken(int NroParticion);
+	std::string		getIndexSMS();
 private:
 	char*	convertString2Char(std::string& texto);
 	tipo_de_Respuesta tipo;

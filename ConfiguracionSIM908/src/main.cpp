@@ -160,7 +160,7 @@ int main()
 									{
 									//SIM908->WriteCommand(LeerSMS);
 
-									LeerSMS = "AT+CMGR=" + Respuesta->getToken(2) + "\r";
+									LeerSMS = "AT+CMGR=" + Respuesta->getIndexSMS() + "\r";
 
 									//SIM908->writeStr(LeerSMS);
 									SIM908->writeStr(LeerSMS);

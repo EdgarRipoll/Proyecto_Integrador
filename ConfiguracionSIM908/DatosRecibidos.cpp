@@ -117,4 +117,7 @@ void	DatosRecibidos::OrganizaTrama()//const char* Separador)
 		std::cout <<"Particion[ "<<divisionescopy<<" ]: "<< Particion[divisionescopy]<<" "<< Particion[divisionescopy].size()<<std::endl;
 	}*/
 }
-
+std::string	DatosRecibidos::getIndexSMS()
+{
+	return this->getToken(2);
+}
