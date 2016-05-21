@@ -53,7 +53,7 @@ void ModuloSIM::ReadResponse()
 		Resp = this->readStr(100);
 	//return Resp;
 	//if(Resp.compare("") || Resp.compare("\n") || Resp.compare("\r"))//Resp != "" )
-	if(Resp != "\0")
+	if(Resp != "\0")//||(Resp != ">")||(Resp != "")||(Resp != " ")||(Resp != "\r")||(Resp != "\n"))
 	{
 		DatosSIM = Resp;
 		RecibeDato = 1;
@@ -71,8 +71,8 @@ void ModuloSIM::ReadResponse()
 void ModuloSIM::EnviaSMS (char sms[], char telefono[])
 {
 	char	Destino[24];
-	char	ModoText[] = "AT+CMGF=1\r\n";
-	WriteCommand(ModoText);            //modo texto
+/*	char	ModoText[] = "AT+CMGF=1\r\n";
+	WriteCommand(ModoText);            //modo texto*/
 	sprintf(Destino,"AT+CMGS=\"%s\"\r\n",telefono);  //numero de destino
 	//WriteCommand(Destino);
 	//WriteCommand(sms);  //mensaje a enviar
