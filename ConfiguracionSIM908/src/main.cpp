@@ -133,9 +133,11 @@ int main()
 /*	sleep(2);
 	delay=0;
 	SIM908->writeStr("AT\r");*/
+	sleep(1);
+	SIM908->writeStr("AT+CGPSRST=1\r");/*
 	sleep(3);
 	delay=0;
-	SIM908->writeStr("AT+CMGR=2\r");
+	SIM908->writeStr("AT+CMGR=2\r");*/
 	while(true)
 	{
 

@@ -53,7 +53,7 @@ void ModuloSIM::ReadResponse()
 		Resp = this->readStr(100);
 	//return Resp;
 	//if(Resp.compare("") || Resp.compare("\n") || Resp.compare("\r"))//Resp != "" )
-	if(Resp != "\0")//||(Resp != ">")||(Resp != "")||(Resp != " ")||(Resp != "\r")||(Resp != "\n"))
+	if((Resp != "\0") && (Resp.compare(2, 1, ">") != 0))//(Resp != ">"))//||(Resp != "")||(Resp != " ")||(Resp != "\r")||(Resp != "\n"))
 	{
 		DatosSIM = Resp;
 		RecibeDato = 1;
