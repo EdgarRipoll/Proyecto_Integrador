@@ -180,7 +180,15 @@ int main()
 							if((strstr(MensajeRecibido->getMensajedeTexto(1), "Ubicacion") != NULL) || (strstr(MensajeRecibido->getMensajedeTexto(0), "Ubicacion") != NULL))
 							{
 								//SIM908->WriteCommand(PedirUbicacion);
-								SIM908->writeStr(PedirUbicacion);
+								bool ATdeshabilitado=1;
+								do
+									{
+									if(SIM908->dataAvailable(500))
+										{
+										ATdeshabilitado=0;
+										SIM908->writeStr(PedirUbicacion);
+										}
+									}while(ATdeshabilitado);
 								//delay=0;
 								std::cout <<"Switch3"<<"\n";
 							}
