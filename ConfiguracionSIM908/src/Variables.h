@@ -35,7 +35,8 @@ int	RecibeDatos=0;
 const char*	Separador = &SeparadorTrama;*/
 //char *token;
 //int nroTokens=0;
-char	LeerSMS[] = "AT+CMGR=2\r";
+//char	LeerSMS[] = "AT+CMGR=2\r";
+std::string	LeerSMS;
 char	PedirUbicacion[] = "AT+CGPSINF=32\r";
 //char	ModoText[] = "AT+CMGF=1\r\n";
 //char	latitud[11];

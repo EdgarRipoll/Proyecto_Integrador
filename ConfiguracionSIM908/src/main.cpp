@@ -160,10 +160,10 @@ int main()
 									{
 									//SIM908->WriteCommand(LeerSMS);
 
-									std::string bar = "AT+CMGR=" + Respuesta->getToken(2) + "\r";
+									LeerSMS = "AT+CMGR=" + Respuesta->getToken(2) + "\r";
 
 									//SIM908->writeStr(LeerSMS);
-									SIM908->writeStr(bar);
+									SIM908->writeStr(LeerSMS);
 									//delay=0;
 									std::cout <<"Switch1: "<< Respuesta->getToken(0)<<"\n";
 									}
