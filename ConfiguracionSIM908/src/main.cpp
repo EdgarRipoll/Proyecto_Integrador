@@ -100,15 +100,13 @@ int main()
 			Respuesta = new DatosRecibidos(SIM908->getDatosSIM());
 		}while(strstr(Respuesta->getRespuestaChar(),"OK") == NULL);
 		std::cout<<"INICIADO...\n";
-		sleep(1);
+		sleep(3);
 		SIM908->writeStr("ATE0\r");
-		sleep(1);
+		sleep(3);
 		SIM908->writeStr("AT+CGPSPWR=1\r");
-		sleep(1);
-		SIM908->writeStr("AT+CGPSPWR=1\r");
-		sleep(1);
+		sleep(3);
 		SIM908->writeStr("AT+CGPSRST=1\r");
-		sleep(1);
+		sleep(3);
 		//SIM908->writeStr("AT+CMGF=1\r");
     }
 
@@ -131,7 +129,7 @@ int main()
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
 	//SIM908->WriteCommand(Msj);
 	sleep(2);
-	delay=0;
+//	delay=0;
 	SIM908->writeStr("AT\r");
 /*	sleep(3);
 	delay=0;
@@ -166,7 +164,7 @@ int main()
 
 									//SIM908->writeStr(LeerSMS);
 									SIM908->writeStr(bar);
-									delay=0;
+									//delay=0;
 									std::cout <<"Switch1: "<< Respuesta->getToken(0)<<"\n";
 									}
 								if(strstr(Respuesta->getTokenChar(0),"OK") != NULL || strstr(Respuesta->getTokenChar(0),"ERROR") != NULL  )
@@ -183,7 +181,7 @@ int main()
 							{
 								//SIM908->WriteCommand(PedirUbicacion);
 								SIM908->writeStr(PedirUbicacion);
-								delay=0;
+								//delay=0;
 								std::cout <<"Switch3"<<"\n";
 							}
 							//if(MensajeRecibido->getMensajedeTexto().compare(2, 5, "Salud") == 0)
