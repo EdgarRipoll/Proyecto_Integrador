@@ -130,12 +130,10 @@ int main()
 
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
 	//SIM908->WriteCommand(Msj);
-/*	sleep(2);
+	sleep(2);
 	delay=0;
-	SIM908->writeStr("AT\r");*/
-	sleep(1);
-	SIM908->writeStr("AT+CGPSRST=1\r");/*
-	sleep(3);
+	SIM908->writeStr("AT\r");
+/*	sleep(3);
 	delay=0;
 	SIM908->writeStr("AT+CMGR=2\r");*/
 	while(true)
@@ -163,7 +161,11 @@ int main()
 								if(strstr(Respuesta->getRespuestaChar(),"+CMTI:") != NULL)
 									{
 									//SIM908->WriteCommand(LeerSMS);
-									SIM908->writeStr(LeerSMS);
+
+									std::string bar = "AT+CMGR=" + Respuesta->getToken(2) + "\r";
+
+									//SIM908->writeStr(LeerSMS);
+									SIM908->writeStr(bar);
 									delay=0;
 									std::cout <<"Switch1: "<< Respuesta->getToken(0)<<"\n";
 									}
