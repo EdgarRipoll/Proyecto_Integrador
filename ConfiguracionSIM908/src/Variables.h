@@ -47,3 +47,4 @@ bool delay=0;
 int cont=0;
 int cont2=0;
 bool PideUbicacion=0;
+bool LeaSMS=0;
