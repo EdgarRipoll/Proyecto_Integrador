@@ -46,3 +46,4 @@ char	PedirUbicacion[] = "AT+CGPSINF=32\r";
 bool delay=0;
 int cont=0;
 int cont2=0;
+bool PideUbicacion=0;

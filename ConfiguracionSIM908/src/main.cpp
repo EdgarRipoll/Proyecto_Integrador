@@ -95,19 +95,23 @@ int main()
 		do{
 			sleep(1);
 			std::cout<<"Iniciando...\n";
-			SIM908->writeStr("AT\r");
+			//SIM908->writeStr("AT\r");
+			SIM908->WriteATCommand("AT\r");
 			SIM908->ReadResponse();
 			Respuesta = new DatosRecibidos(SIM908->getDatosSIM());
 		}while(strstr(Respuesta->getRespuestaChar(),"OK") == NULL);
 		std::cout<<"INICIADO...\n";
 		sleep(3);
-		SIM908->writeStr("ATE0\r");
+		//SIM908->writeStr("ATE0\r");
+		SIM908->WriteATCommand("ATE0\r");
 		sleep(3);
-		SIM908->writeStr("AT+CGPSPWR=1\r");
+		SIM908->WriteATCommand("AT+CGPSPWR=1\r");
+		//SIM908->writeStr("AT+CGPSPWR=1\r");
 		sleep(3);
-		SIM908->writeStr("AT+CGPSRST=1\r");
+		SIM908->WriteATCommand("AT+CGPSRST=1\r");
+		//SIM908->writeStr("AT+CGPSRST=1\r");
 		sleep(3);
-		SIM908->ReadResponse();
+		//SIM908->ReadResponse();
 		//SIM908->writeStr("AT+CMGF=1\r");
     }
 
@@ -197,7 +201,9 @@ int main()
 										SIM908->writeStr(PedirUbicacion);
 										}
 									}while(ATdeshabilitado);*/
+								PideUbicacion=1;
 								SIM908->WriteATCommand(PedirUbicacion);
+
 								//delay=0;
 								std::cout <<"Switch3"<<"\n";
 							}
@@ -208,7 +214,7 @@ int main()
 			//}
 			//if(Respuesta->getTipoRespuesta()==GPS)
 			//{
-				case GPS:
+				case GPS:	PideUbicacion=0;
 							DatosGPS = new	GPSRecibido(SIM908->getDatosSIM());
 							//DatosGPS->OrganizaTrama(Separador);
 							std::cout <<"Switch4"<<"\n";
@@ -241,8 +247,12 @@ void Timer_Int(){
 	if(delay)
 	{
 		cont++;
-		if(cont>1)
+		if(cont>3)
 		{
+			if(PideUbicacion)
+				{
+				SIM908->WriteATCommand(PedirUbicacion);
+				}
 			delay=0;
 			cont=0;
 		}
