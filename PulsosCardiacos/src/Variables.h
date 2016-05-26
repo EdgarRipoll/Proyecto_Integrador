@@ -7,7 +7,7 @@
 #include "Sensor.hpp"
 #include <iostream>
 #include <fstream>
-ArrayPC_Sensor*	ArraySensor;
+Array_Sensor*	ArraySensor;
 int adc_value;
 // writing on a text file
 #include <iostream>

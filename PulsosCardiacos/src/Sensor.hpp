@@ -33,24 +33,24 @@ private:
  * Basic module for analog Pressure sensor on analog pin
  *
  */
-class ArrayPC_Sensor : public BasicSensor{
+class Array_Sensor : public BasicSensor{
 public:
     /**
      * Analog Pressure sensor constructor
      *
      * @param pin analog pin to use
      */
-	ArrayPC_Sensor(unsigned int pin);
+	Array_Sensor(unsigned int pin);
     /**
      * Analog Pressure sensor constructor
      *
      * @param pin analog pin to use, maximum and minimum value possible that this sensor can measure [kPa]
      */
-	ArrayPC_Sensor(unsigned int pin, float rangeUpper, float rangeLower);
+	Array_Sensor(unsigned int pin, float rangeUpper, float rangeLower);
     /**
      * ArrayPC_Sensor destructor
      */
-	virtual ~ArrayPC_Sensor();
+	virtual ~Array_Sensor();
     /**
      * Get the Pressure in kPa from the sensor
      *
