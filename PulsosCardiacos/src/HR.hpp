@@ -20,6 +20,11 @@ public:
 	void	getMedicion();
 	int		getContadorMediciones();
 	bool	getVector();
+	bool	getCambioVector();
+	void	ProcesarSenal();
+	//void	Guardar();
+	float	getProcesamiento(int index);
+	float	getRaw(int index);
 	virtual ~HR();
 private:
 	void	Derivative();
@@ -33,6 +38,7 @@ private:
 								//destino
 	bool	VectorSeleccionado;	//Es un flag que me indica en que vector guardar los valores medidos
 	float	Procesamiento[504];
+	bool	CambioVector;		//Es un flag que me indica el momento en que se produce el cambio del vector
 };
 
 #endif /* HR_HPP_ */

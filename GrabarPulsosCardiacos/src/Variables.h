@@ -12,4 +12,4 @@ int adc_value;
 // writing on a text file
 #include <iostream>
 #include <fstream>
-std::ofstream myfile ("PulsosCardiacos.txt");
+std::ofstream myfile ("PulsosCardiacos2.txt");

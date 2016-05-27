@@ -4,6 +4,6 @@ void Timer_Interrupt();
 
 void Timer_Interrupt()
 {
-
+	Radial->getMedicion();
 }
 

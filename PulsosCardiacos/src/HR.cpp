@@ -11,7 +11,7 @@ HR::HR(int pin) : Array_Sensor(pin) {
 	// TODO Auto-generated constructor stub
 	ContadorMediciones=0;
 	VectorSeleccionado=0;
-	//DerivativeTF = { -0.2 , -0.4 , 0 , 0.4 , 0.2 };
+	CambioVector=0;
 }
 
 HR::~HR() {
@@ -26,6 +26,7 @@ void	HR::getMedicion(){
 		{
 		ContadorMediciones=0;
 		VectorSeleccionado = !VectorSeleccionado;
+		CambioVector=1;
 		}
 }
 
@@ -68,11 +69,49 @@ void	HR::Normalizar()
 	float max_value=0;
 	max_value = *std::max_element(Procesamiento,Procesamiento+504); //504 es el (sizeof(Procesamiento))
 	for(int i=0 ; i<=503 ; i++) //503 es el (sizeof(Procesamiento)-1)
+	{
 		Procesamiento[i] /= max_value;
+
+	}
 }
 
 void	HR::SquaringFunction()
 {
 	for(int i=0 ; i<=503 ; i++) //503 es el (sizeof(Procesamiento)-1)
-		Procesamiento[i] = sqrt(Procesamiento[i]);
+		Procesamiento[i] = pow(Procesamiento[i],2.0);
+}
+
+bool	HR::getCambioVector()
+{
+	if(CambioVector)
+	{
+		CambioVector=0;
+		return 1;
+	}else
+		return 0;
+}
+
+void	HR::ProcesarSenal()
+{
+	this->Derivative();
+	this->Normalizar();
+	this->SquaringFunction();
+}
+/*
+void	HR::Guardar()
+{
+	if (myfile.is_open())
+		for(int j; j<=503 ; j++)
+			myfile << Procesamiento[j] <<"\n";
+	else std::cout << "Unable to open file";
+}
+*/
+float	HR::getProcesamiento(int index)
+{
+	return	Procesamiento[index];
+}
+
+float	HR::getRaw(int index)
+{
+	return	LecturaPulsaciones[!VectorSeleccionado][index];
 }
