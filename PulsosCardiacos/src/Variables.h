@@ -13,3 +13,6 @@ int adc_value;
 #include <fstream>
 std::ofstream Procesado ("PruebaPulsosCardiacosProc.txt");
 std::ofstream Raw ("PruebaPulsosCardiacosRaw.txt");
+std::ofstream Index ("PruebaPulsosCardiacosIndex.txt");
+//bool toggle=0;
+//mraa::Gpio* PowerKey;

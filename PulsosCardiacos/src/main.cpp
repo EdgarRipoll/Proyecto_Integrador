@@ -17,8 +17,10 @@ int main()
 
 /////////////////////////INICIALIZACION DE GPIO//////////////////////////////////
 
-//ArraySensor = new Array_Sensor(0);
 Radial = new HR(0);
+
+sleep(5);
+
 
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
 	if(start_timer(5, &Timer_Interrupt))
@@ -34,19 +36,18 @@ int cont=0;
 		{
 
 			Radial->ProcesarSenal();
-			std::cout<<"entre\n";
-//			Radial->Guardar();
+/*
 			if (Procesado.is_open())
 			{
-				for(int j=0; j<=503 ; j++)
+				for(int j=0; j<=509 ; j++)
 				{
 					Procesado << Radial->getProcesamiento(j) <<std::endl;
-				std::cout<<Radial->getProcesamiento(j)<<"\n";
 				}
 			}
 			else{
 				std::cout << "Unable to open file Procesado";
 			}
+*/
 			if (Raw.is_open())
 			{
 				for(int j=0; j<=499 ; j++)
@@ -55,14 +56,22 @@ int cont=0;
 			else{
 				std::cout << "Unable to open file Raw";
 			}
+			if (Index.is_open())
+			{
+				for(int j=0; j<=Radial->getContador()-1 ; j++)
+					Index << Radial->getIndex(j) <<std::endl;
+			}
+			else{
+				std::cout << "Unable to open file Index";
+			}
 			cont++;
-			if(cont>30)
+			if(cont>20)
 				running=1;
 		}
 	}
 	Procesado.close();
 	Raw.close();
-    //ArraySensor->~Array_Sensor();
+	Index.close();
 	Radial->~HR();
     return MRAA_SUCCESS;
 }
