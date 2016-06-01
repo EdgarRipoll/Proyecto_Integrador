@@ -203,7 +203,7 @@ void	HR::BuscarHB()
 	int	indexPicos=0;
 	for(int i=0 ; i<=499 ; i++)
 		{
-		sampleCounter += 5;	// keep track of the time in mS with this variable
+		sampleCounter += 4;	// keep track of the time in mS with this variable
 		int N = sampleCounter - lastBeatTime;	// monitor the time since the last beat to avoid noise
 
 		//  find the peak and trough of the pulse wave
@@ -226,7 +226,7 @@ void	HR::BuscarHB()
 
 		//  NOW IT'S TIME TO LOOK FOR THE HEART BEAT
 		// signal surges up in value every time there is a pulse
-		if(N > (IBI/5)*3)	// avoid high frequency noise
+		if(N > (IBI*3)/5)	// avoid high frequency noise
 			{
 			if ( (PosiblePulso == 1) && (Pulse == 0))
 				{

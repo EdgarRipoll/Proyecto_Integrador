@@ -4,7 +4,16 @@ void Timer_Interrupt();
 
 void Timer_Interrupt()
 {
-	Radial->getMedicion();
+	if(toggle)
+	{
+		Radial->getMedicion();
+		toggle=0;
+		//PowerKey->write(1);
+	}else{
+		Ulnar->getMedicion();
+		toggle=1;
+		//PowerKey->write(0);
+	}
 	/*
 	if(toggle)
 	{
