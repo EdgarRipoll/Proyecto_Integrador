@@ -35,6 +35,10 @@ float Array_Sensor::getCurrentValue(){
 int Array_Sensor::getRawValue(){
 	return rawvalue=Analogpin->read();
 }
+int Array_Sensor::getPin()
+{
+	return	pin;
+}
 std::string Array_Sensor::getIdentifier(){
 	return SensorId;
 }

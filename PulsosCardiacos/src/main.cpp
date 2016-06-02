@@ -4,7 +4,9 @@
 #include <vector>
 using namespace std;
 int running = 0;
-
+int running2 = 0;
+int cont=0;
+int cont2=0;
 void sig_handler(int signo)
 	{
 	    if (signo == SIGINT) {
@@ -38,9 +40,9 @@ PowerKey->write(0);
 	    printf("\n timer error\n");
 	    return(1);
 	  }
-int cont=0;
+
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
-	while(running==0)
+	while(running==0 && running2==0)
 	{
 		if(Ulnar->getCambioVector())
 		{
@@ -74,6 +76,9 @@ int cont=0;
 			else{
 				std::cout << "Unable to open file Index";
 			}
+			cont2++;
+			if(cont2>30)
+				running2=1;
 		}
 
 		if(Radial->getCambioVector())
@@ -91,7 +96,7 @@ int cont=0;
 			else{
 				std::cout << "Unable to open file Procesado";
 			}
-*/
+
 			if (RawR.is_open())
 			{
 				for(int j=0; j<=499 ; j++)
@@ -107,7 +112,7 @@ int cont=0;
 			}
 			else{
 				std::cout << "Unable to open file Index";
-			}
+			}*/
 			cont++;
 			if(cont>30)
 				running=1;

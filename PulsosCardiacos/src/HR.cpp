@@ -195,12 +195,13 @@ int		HR::getContador()
 
 void	HR::BuscarHB()
 {
-	std::cout<<"SampleCounter: "<< sampleCounter<<"\n";
+//	std::cout<<"SampleCounter: "<< sampleCounter<<"\n";
 	std::cout<<"IBI: "<< IBI<<"\n";
 	contador2=0;
 	bool aumento_senal=0;
 	bool PosiblePulso=0;
 	int	indexPicos=0;
+	unsigned long sampleCounterBackup=0;
 	for(int i=0 ; i<=499 ; i++)
 		{
 		sampleCounter += 4;	// keep track of the time in mS with this variable
@@ -211,7 +212,7 @@ void	HR::BuscarHB()
 			if (LecturaPulsaciones[!VectorSeleccionado][i] < T)	// T is the trough
 				T = LecturaPulsaciones[!VectorSeleccionado][i];	// keep track of lowest point in pulse wave
 
-		if(LecturaPulsaciones[!VectorSeleccionado][i] < 0.95*P && aumento_senal==1)
+		if(LecturaPulsaciones[!VectorSeleccionado][i] < 0.98*P && aumento_senal==1)
 		{
 			PosiblePulso=1;
 			aumento_senal = 0;
@@ -221,20 +222,22 @@ void	HR::BuscarHB()
 			P = LecturaPulsaciones[!VectorSeleccionado][i];	// P is the peak
 			aumento_senal=1;
 			indexPicos = indexTotal;
+			sampleCounterBackup = sampleCounter;
 			}                                     			// keep track of highest point in pulse wave
 
 
 		//  NOW IT'S TIME TO LOOK FOR THE HEART BEAT
 		// signal surges up in value every time there is a pulse
-		if(N > (IBI*3)/5)	// avoid high frequency noise
+		if(N > ((IBI*3)/5))	// avoid high frequency noise
 			{
 			if ( (PosiblePulso == 1) && (Pulse == 0))
 				{
 				Pulse = 1;                               // set the Pulse flag when we think there is a pulse
 				index[contador2] = indexPicos;
 				contador2++;
-				IBI = sampleCounter - lastBeatTime;         // measure time between beats in mS
-				lastBeatTime = sampleCounter;               // keep track of time for next pulse
+				//IBI = sampleCounter - lastBeatTime;         // measure time between beats in mS
+				IBI = sampleCounterBackup - lastBeatTime;         // measure time between beats in mS
+				lastBeatTime = sampleCounterBackup;               // keep track of time for next pulse
 
 				if(secondBeat)                        // if this is the second beat, if secondBeat == TRUE
 					{
@@ -262,7 +265,7 @@ void	HR::BuscarHB()
 				runningTotal += rate[9];                // add the latest IBI to runningTotal
 				runningTotal /= 10;                     // average the last 10 IBI values
 				BPM = 60000/runningTotal;               // how many beats can fit into a minute? that's BPM!
-				std::cout<<"BPM: "<< BPM<<"\n";
+				std::cout<< "BPM[ " << this->getPin() << " ]: " << BPM<<"\n";
 				}
 			}else{
 				PosiblePulso=0;

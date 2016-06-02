@@ -64,6 +64,12 @@ public:
      */
 	int getRawValue();
     /**
+     * Get Analog channel where it is connected
+     *
+     * @return the Analog channel where it is connected
+     */
+	int getPin();
+	/**
      * Get name of sensor
      *
      * @return the name of this sensor
