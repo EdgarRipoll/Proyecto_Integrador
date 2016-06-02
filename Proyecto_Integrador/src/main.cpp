@@ -55,6 +55,9 @@ int main()
         mraa_result_print((mraa_result_t) MRAA_SUCCESS);
     DTR->write(0);
 
+    Radial = new HR(0);
+    Ulnar = new HR(1);
+
 ////////////////////////INICIALIZO PUERTO SERIE////////////////////////////////////
 
     SIM908 = new ModuloSIM("/dev/ttyMFD1",115200);
@@ -97,7 +100,7 @@ int main()
     fcntl(fd, F_SETOWN, getpid());
     fcntl(fd, F_SETFL,  O_ASYNC );
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
-	if(start_timer(500, &Timer_Int))
+	if(start_timer(2, &Timer_Int))
 	  {
 	    printf("\n timer error\n");
 	    return(1);
@@ -161,6 +164,17 @@ int main()
 							break;
 			}
 		}
+
+		if(Ulnar->getCambioVector())
+		{
+			Ulnar->ProcesarSenal();
+		}
+
+		if(Radial->getCambioVector())
+		{
+			Radial->ProcesarSenal();
+		}
+
 	}
 	delete PowerKey;
 	delete DTR;
@@ -169,6 +183,8 @@ int main()
 	delete Respuesta;
 	delete MensajeRecibido;
 	delete DatosGPS;
+	Radial->~HR();
+	Ulnar->~HR();
 	return response;
 }
 

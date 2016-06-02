@@ -9,6 +9,12 @@
 #include "GPSRecibido.h"
 #include "ModuloSIM.h"
 
+#include "Sensor.hpp"
+#include "HR.hpp"
+#include <signal.h>
+#include <iomanip>
+
+
 char	Msj[]="AT\r";
 std::string DatosSIM908;
 ModuloSIM*	SIM908;
@@ -25,3 +31,9 @@ int cont=0;
 int cont2=0;
 bool PideUbicacion=0;
 bool LeaSMS=0;
+
+
+
+HR*	Radial;
+HR*	Ulnar;
+bool toggle=0;

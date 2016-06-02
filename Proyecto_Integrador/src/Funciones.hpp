@@ -6,20 +6,29 @@ void EnviaSalud();
 
 
 void Timer_Int(){
+	if(toggle)
+	{
+		Radial->getMedicion();
+		toggle=0;
+	}else{
+		Ulnar->getMedicion();
+		toggle=1;
+	}
+
 	if(delay)
 	{
 		cont++;
-		if(cont>3)
+		if(cont>750)
 		{
 			if(LeaSMS)
 			{
 				SIM908->WriteATCommand(LeerSMS);
 			}
 			if(PideUbicacion)
-				{
+			{
 				std::cout<<"PideUbicacion";
 				SIM908->WriteATCommand(PedirUbicacion);
-				}
+			}
 			delay=0;
 			cont=0;
 		}
