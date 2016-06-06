@@ -8,7 +8,7 @@
 #include "SMSRecibido.h"
 #include "GPSRecibido.h"
 #include "ModuloSIM.h"
-
+#include <sstream>
 #include "Sensor.hpp"
 #include "HR.hpp"
 #include <signal.h>
@@ -31,9 +31,10 @@ int cont=0;
 int cont2=0;
 bool PideUbicacion=0;
 bool LeaSMS=0;
-
-
-
 HR*	Radial;
 HR*	Ulnar;
 bool toggle=0;
+char BPM_Char[40];
+int	Timer=500;	//es la cantidad de milisegundos que va a contar para que ocurra la interrupcion del timer
+bool	HabilitarHR = 0;
+bool	ReestablecerTimer=0;

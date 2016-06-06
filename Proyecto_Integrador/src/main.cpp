@@ -72,11 +72,15 @@ int main()
     	PowerKey->write(1);
     	sleep(3);
 		PowerKey->write(0);
-		sleep(15);
+		SIM908->ReadResponse();
+		sleep(10);
+		SIM908->ReadResponse();
 		do{
 			sleep(1);
 			std::cout<<"Iniciando...\n";
-			SIM908->WriteATCommand("AT\r");
+			SIM908->WriteATCommand("AT\r\n");
+			SIM908->ReadResponse();
+			sleep(1);
 			SIM908->ReadResponse();
 			Respuesta = new DatosRecibidos(SIM908->getDatosSIM());
 		}while(strstr(Respuesta->getRespuestaChar(),"OK") == NULL);
@@ -100,7 +104,7 @@ int main()
     fcntl(fd, F_SETOWN, getpid());
     fcntl(fd, F_SETFL,  O_ASYNC );
 ///////////////////////INICIALIZACION DE TIMER///////////////////////////////////
-	if(start_timer(2, &Timer_Int))
+	if(start_timer(Timer, &Timer_Int))
 	  {
 	    printf("\n timer error\n");
 	    return(1);
@@ -108,22 +112,28 @@ int main()
 
 //////////////////////BUCLE DE PROGRAMA/////////////////////////////////////////
 	sleep(2);
+	std::cout <<"Envia dato: "<<"\n";
 	SIM908->WriteATCommand("AT\r");
 
-	while(true)
+	/*char	endSMS[2];
+	endSMS[0] = 0x1a;
+    endSMS[1] = '\0';
+    SIM908->WriteATCommand(endSMS);
+	*/
+    while(true)
 	{
 
 		if(SIM908->getRecibeDato())
 		{
-			std::cout << "entre"<<"\n";
+			//std::cout << "entre"<<"\n";
 			SIM908->ResetRecibeDato();
-			std::cout <<"RecibeDato: "<< SIM908->getRecibeDato()<<"\n";
-			cout <<"DatosSIM: "<< SIM908->getDatosSIM() <<" :DatosSIM"<<endl;
+			//std::cout <<"RecibeDato: "<< SIM908->getRecibeDato()<<"\n";
+			//cout <<"DatosSIM: "<< SIM908->getDatosSIM() <<" :DatosSIM"<<endl;
 			Respuesta = new DatosRecibidos(SIM908->getDatosSIM());
-			std::cout << "sali"<<std::endl;
+			//std::cout << "sali"<<std::endl;
 			std::cout <<"Token: "<< Respuesta->getToken(0)<<"\n";
-			std::cout <<"Token1: "<< Respuesta->getToken(1)<<"\n";
-			std::cout <<"Token2: "<< Respuesta->getToken(2)<<"\n";
+			//std::cout <<"Token1: "<< Respuesta->getToken(1)<<"\n";
+			//std::cout <<"Token2: "<< Respuesta->getToken(2)<<"\n";
 			switch	(Respuesta->getTipoRespuesta()){
 				case COMANDO:
 								if(strstr(Respuesta->getRespuestaChar(),"+CMTI:") != NULL)
@@ -145,36 +155,60 @@ int main()
 							if((strstr(MensajeRecibido->getMensajedeTexto(1), "Ubicacion") != NULL) || (strstr(MensajeRecibido->getMensajedeTexto(0), "Ubicacion") != NULL))
 							{
 								PideUbicacion=1;
-								std::cout<<"PideUbicacion1: " << PideUbicacion << "\n";
+								//std::cout<<"PideUbicacion1: " << PideUbicacion << "\n";
 								SIM908->WriteATCommand(PedirUbicacion);
 								std::cout <<"Switch3"<<"\n";
 							}
-							if((strstr(MensajeRecibido->getMensajedeTexto(1), "Salud") != NULL) || (strstr(MensajeRecibido->getMensajedeTexto(0), "Salud") != NULL))
-								EnviaSalud();
+							if((strstr(MensajeRecibido->getMensajedeTexto(1), "Salud") != NULL) || (strstr(MensajeRecibido->getMensajedeTexto(0), "Salud") != NULL)){
+								//std::cout << PromedioBMP() << "\n";
+								//SIM908->EnviaSMS(PromedioBMP(), MensajeRecibido->getNroTelefono());
+								HabilitarHR=1;
+								std::cout <<"Switch7"<<"\n";
+								Timer = 2;
+								if(start_timer(Timer, &Timer_Int))
+								    printf("\n timer error\n");
+							}
 							break;
 
 				case GPS:	PideUbicacion=0;
 							std::cout<<"PideUbicacion2: " << PideUbicacion << "\n";
 							DatosGPS = new	GPSRecibido(SIM908->getDatosSIM());
-							std::cout <<"Switch4"<<"\n";
+							//std::cout <<"Switch4"<<"\n";
 							DatosGPS->DecoNMEA();
-							std::cout <<"Switch5 "<< DatosGPS->getLinkGoogle() <<"\n";
+							//std::cout <<"Switch5 "<< DatosGPS->getLinkGoogle() <<"\n";
 							SIM908->EnviaSMS(DatosGPS->getLinkGoogle(), MensajeRecibido->getNroTelefono());
 							std::cout <<"Switch6"<<"\n";
 							break;
 			}
 		}
-
-		if(Ulnar->getCambioVector())
+		if(HabilitarHR)
 		{
-			Ulnar->ProcesarSenal();
-		}
+			if(Ulnar->getCambioVector())
+			{
+				Ulnar->ProcesarSenal();
+				std::cout <<"Switch7"<<"\n";
+			}
 
-		if(Radial->getCambioVector())
+			if(Radial->getCambioVector())
+			{
+				Radial->ProcesarSenal();
+				std::cout <<"Switch8"<<"\n";
+			}
+		}
+		if(ReestablecerTimer)
 		{
-			Radial->ProcesarSenal();
+			HabilitarHR=0;
+			Timer = 500;
+			if(start_timer(Timer, &Timer_Int))
+			    printf("\n timer error\n");
+			ReestablecerTimer=0;
+			Radial->resetMedicion30s();
+			Ulnar->resetMedicion30s();
+			//std::cout << PromedioBMP() << "\n";
+			std::cout <<"Tel: "<< MensajeRecibido->getNroTelefono() <<"\n";
+			SIM908->EnviaSMS(PromedioBMP(), MensajeRecibido->getNroTelefono());
+			std::cout<<"Switch9\n";
 		}
-
 	}
 	delete PowerKey;
 	delete DTR;

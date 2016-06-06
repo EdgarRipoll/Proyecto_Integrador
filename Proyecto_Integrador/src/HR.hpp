@@ -25,7 +25,9 @@ public:
 	int		getProcesamiento(int index);
 	int		getRaw(int index);
 	int		getIndex(int index);
-	int		getContador();
+	int		getMedicion30s();
+	void	resetMedicion30s();
+	int		getBPM();
 	virtual ~HR();
 private:
 	void	FiltroPB();
@@ -52,11 +54,12 @@ private:
 	bool	secondBeat;	// used to seed rate array so we startup with reasonable BPM
 	int IBI;	// int that holds the time interval between beats! Must be seeded!
 	bool Pulse;	// "True" when User's live heartbeat is detected. "False" when not a "live beat"
-	int BPM;	// int that holds raw Analog in 0. updated every 5mS
+	int BeatsPM;	// int that holds raw Analog in 0. updated every 4mS
 	bool QS;	// becomes true when finds a beat.
 	int	index[500];
 	int indexTotal;
 	int contador2;
+	int	Medicion30s;	//es un contador para que se midan los pulsos por 30s
 };
 
 #endif /* HR_HPP_ */

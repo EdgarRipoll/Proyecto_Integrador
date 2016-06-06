@@ -91,7 +91,7 @@ int main()
     	PowerKey->write(1);
     	sleep(3);
 		PowerKey->write(0);
-		sleep(15);
+		sleep(3);
 		do{
 			sleep(1);
 			std::cout<<"Iniciando...\n";
@@ -136,6 +136,7 @@ int main()
 	sleep(2);
 //	delay=0;
 //	SIM908->writeStr("AT\r");
+	cout<<"Envia dato\n";
 	SIM908->WriteATCommand("AT\r");
 /*	sleep(3);
 	delay=0;
@@ -272,6 +273,7 @@ void signal_handler_IO (int status)
 	//if(!delay)
 	//{
 		SIM908->ReadResponse();
+		cout<<"signal\n";
 		delay=1;
 	//}
 

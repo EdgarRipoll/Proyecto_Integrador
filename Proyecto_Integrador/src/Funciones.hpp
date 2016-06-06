@@ -2,36 +2,40 @@
 #include <stdlib.h>
 void Timer_Int();
 void signal_handler_IO (int status);   /* definition of signal handler */
-void EnviaSalud();
+char* PromedioBMP();
 
 
 void Timer_Int(){
-	if(toggle)
+	if(HabilitarHR)
 	{
-		Radial->getMedicion();
-		toggle=0;
-	}else{
-		Ulnar->getMedicion();
-		toggle=1;
+		if(toggle)
+		{
+			Radial->getMedicion();
+			toggle=0;
+		}else{
+			Ulnar->getMedicion();
+			toggle=1;
+		}
+		if(!Radial->getMedicion30s() && !Ulnar->getMedicion30s())
+			ReestablecerTimer=1;
 	}
 
-	if(delay)
+	cont++;
+	if(cont > (1500/Timer))
 	{
-		cont++;
-		if(cont>750)
+		//std::cout<<"PideUbicacion\n";
+		if(LeaSMS)
 		{
-			if(LeaSMS)
-			{
-				SIM908->WriteATCommand(LeerSMS);
-			}
-			if(PideUbicacion)
-			{
-				std::cout<<"PideUbicacion";
-				SIM908->WriteATCommand(PedirUbicacion);
-			}
-			delay=0;
-			cont=0;
+			SIM908->WriteATCommand(LeerSMS);
 		}
+		if(PideUbicacion)
+		{
+			//std::cout<<"PideUbicacion";
+			SIM908->WriteATCommand(PedirUbicacion);
+		}
+		//std::cout<<"PideUbicacion2: " << PideUbicacion << "\n";
+		delay=0;
+		cont=0;
 	}
 }
 
@@ -41,7 +45,10 @@ void signal_handler_IO (int status)
 		delay=1;
 }
 
-void EnviaSalud()
+char* PromedioBMP()
 {
-
+	int	BPM_avg;
+	BPM_avg = (Ulnar->getBPM() + Radial->getBPM()) / 2;
+	sprintf(BPM_Char,"Las pulsaciones por minuto son: %d\r",BPM_avg);
+	return	BPM_Char;
 }
