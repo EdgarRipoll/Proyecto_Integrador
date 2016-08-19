@@ -1,6 +1,6 @@
 # Proyecto_Integrador
 
-  In this project an application for Internet of Things is proposed with the Intel Edison board. The developed topics were GPS localization, GSM conection and the measure of pulse rate by photoplethysmography.
+  In this project an application for Internet of Things is proposed with the Intel Edison board. The developed topics were GPS location, GSM conection and the measure of pulse rate by photoplethysmography.
   The overall objective of this project is to design and implement a prototype of a wristband that measures the pulse rate from the wrist and can be used for obtaining GPS location and to send that information to a remote device.
   This project is the result of an internship in Intel.
 
